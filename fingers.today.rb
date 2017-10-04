@@ -35,6 +35,8 @@ class Page
 end
 
 class FingersToday < Sinatra::Base
+  set :port, 6789
+
   get "/" do
     page = Page.new("index")
     erb :page, locals: { page: page }
