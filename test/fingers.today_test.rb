@@ -9,6 +9,12 @@ def app
   FingersToday
 end
 
+class FingersToday
+  def authenticated?
+    true
+  end
+end
+
 describe FingersToday do
   describe "writing to /" do
     let(:body_with_whitespace) { " hello " }

@@ -41,6 +41,7 @@ class FingersToday < Sinatra::Base
   end
 
   post "/" do
+    return 401 unless authenticated?
     page = Page.new("index")
     page.save(request.body.read.strip)
     200
