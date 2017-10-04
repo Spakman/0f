@@ -1,0 +1,11 @@
+[Unit]
+Description=fingers.today
+
+[Service]
+Type=simple
+User=user
+WorkingDirectory=/path/to/fingers.today
+ExecStart=/path/to/fingers.today/fingers.today.sh
+
+[Install]
+WantedBy=multi-user.target

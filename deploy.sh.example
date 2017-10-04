@@ -1,0 +1,21 @@
+#!/bin/sh
+
+hostname=a.hostname
+rootpath=/path/to/fingers.today/
+
+if [ -z "$1" ]; then
+  echo "Usage: deploy <gitobject>"
+else
+  revision=$(git rev-parse $1)
+  git archive -o deploy.tar.gz $1
+  scp deploy.tar.gz ${hostname}:${rootpath}
+  rm deploy.tar.gz
+  ssh -t ${hostname} "
+    cd ${rootpath} &&
+    tar -zxvf deploy.tar.gz &&
+    rm deploy.tar.gz
+    gem install --file Gemfile --user-install
+    sudo /bin/systemctl restart fingers.today.service
+    echo $(date): ${revision} >> deploy.log
+  "
+fi
