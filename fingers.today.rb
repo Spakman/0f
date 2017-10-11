@@ -1,40 +1,15 @@
 require "sinatra/base"
 require "pathname"
 
-def authenticated?
-  request.env["HTTP_X_CLIENT_AUTHENTICATED"] == "SUCCESS"
-end
+require_relative "lib/page"
 
-class Page
-  PAGE_ROOT = "pages"
-
-  def initialize(path)
-    @pathname = Pathname.new(PAGE_ROOT)
-    @pathname += path
-    check_path_is_safe!(@pathname)
-  end
-
-  def save(content)
-    check_content_is_safe!(content)
-    File.open(@pathname, "w") do |f|
-      f << content
-    end
-  end
-
-  def content
-    File.read(@pathname)
-  end
-
-  private
-
-  def check_path_is_safe!(pathname)
-  end
-
-  def check_content_is_safe!(content)
-  end
-end
+Page.directory_whitelist = *"pages"
 
 class FingersToday < Sinatra::Base
+  def authenticated?
+    request.env["HTTP_X_CLIENT_AUTHENTICATED"] == "SUCCESS"
+  end
+
   set :port, 6789
 
   get "/" do

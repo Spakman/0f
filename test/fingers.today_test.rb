@@ -1,5 +1,6 @@
 require "minitest/autorun"
 require "rack/test"
+
 require_relative "../fingers.today"
 
 ENV["RACK_ENV"] = "test"
@@ -9,11 +10,11 @@ def app
   FingersToday
 end
 
-class FingersToday
+FingersToday.prepend(Module.new do
   def authenticated?
     true
   end
-end
+end)
 
 describe FingersToday do
   describe "writing to /" do
