@@ -1,3 +1,5 @@
+*.swp
+*.swo
 pages/
 deploy.sh
 fingers.today.service
