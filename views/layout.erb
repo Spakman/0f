@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link href="/styles.css" rel="stylesheet" />
+  <% if authenticated? %>
+  <script src="/contenteditable.js"></script>
+  <% else %>
+  <style>
+    article {
+      cursor: default;
+    }
+  </style>
+  <% end %>
+</head>
+<body>
+  <header>
+    <img src="/door_theory_64.png"  />
+    <h1>fingers.today</h1>
+  </header>
+
+  <main>
+    <%= yield %>
+  </main>
+
+  <footer></footer>
+</body>
+</html>
