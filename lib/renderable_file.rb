@@ -1,6 +1,6 @@
 require "pathname"
 
-class IllegalPagePath < Exception; end
+class IllegalPagePath < StandardError; end
 
 class RenderableFile
   class << self
