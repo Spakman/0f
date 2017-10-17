@@ -73,11 +73,11 @@ class RenderableFile
     end
 
     def directories
-      %w( dir1 dir2 )
+      @pathname.children.select(&:directory?).map(&:basename)
     end
 
-    def files
-      %w( file1 file2 )
+    def pages
+      @pathname.children.select(&:file?).map(&:basename)
     end
   end
 end

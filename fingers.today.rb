@@ -5,12 +5,25 @@ require_relative "lib/renderable_file"
 
 RenderableFile.directory_whitelist = *"pages"
 
+module ViewHelpers
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+
+  def link(text, *uri_parts)
+    escaped_uri = URI::Parser.new.escape(File.join(uri_parts))
+    %{<a href="#{escaped_uri}">#{h(text)}</a>}
+  end
+end
+
 class FingersToday < Sinatra::Base
   def authenticated?
     request.env["HTTP_X_CLIENT_AUTHENTICATED"] == "SUCCESS"
   end
 
   set :port, 6789
+
+  helpers ViewHelpers
 
   get "/" do
     page = RenderableFile.build("index")
