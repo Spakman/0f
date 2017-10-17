@@ -2,6 +2,7 @@
 
 hostname=a.hostname
 rootpath=/path/to/fingers.today/
+gemhome=/path/to/gem_home/
 
 if [ -z "$1" ]; then
   echo "Usage: deploy <gitobject>"
@@ -14,7 +15,7 @@ else
     cd ${rootpath} &&
     tar -zxvf deploy.tar.gz &&
     rm deploy.tar.gz &&
-    gem install --file Gemfile --user-install &&
+    GEM_HOME=${gemhome} gem install --file Gemfile --no-user-install &&
     sudo /bin/systemctl restart fingers.today.service &&
     echo $(date): ${revision} >> deploy.log
   "
