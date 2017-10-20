@@ -4,7 +4,9 @@ require_relative "../lib/renderable_file"
 
 describe RenderableFile do
   it "cannot be instantiated directly" do
-    assert_raises(NoMethodError) { RenderableFile.new("/path") }
+    assert_raises(NoMethodError) { RenderableFile.new("path") }
+    assert_raises(NoMethodError) { RenderableFile::Page.new("path") }
+    assert_raises(NoMethodError) { RenderableFile::DirectoryIndex.new("path") }
   end
 
   describe "building" do
@@ -12,11 +14,7 @@ describe RenderableFile do
     let(:path_includes_file) { "file/another" }
     let(:pathname_includes_file) { Pathname.new(File.expand_path("#{__FILE__}/../../pages/file")) }
 
-    before do
-      RenderableFile.directory_whitelist = [ "pages", "more_pages" ]
-    end
-
-    it "raises an IllegalPagePath exception when the path is not nested below directories in the whitelist" do
+    it "raises an IllegalPagePath exception when the path is not nested below the pages directory" do
       assert_raises(IllegalPagePath) { RenderableFile.build("../hello") }
       assert_raises(IllegalPagePath) { RenderableFile.build("/etc/passwd") }
     end
@@ -40,9 +38,14 @@ describe RenderableFile do
       end
     end
 
-    it "allows paths nested below directories in the whitelist" do
+    it "allows paths nested below the pages directory" do
       assert RenderableFile.build("hello")
-      assert RenderableFile.build("../more_pages/hello")
+      assert RenderableFile.build("../pages/hello")
+    end
+
+    it "sets the uri_path instance variable" do
+      assert_equal "/hello", RenderableFile.build("hello").uri_path
+      assert_equal "/", RenderableFile.build("hello/there/../../").uri_path
     end
   end
 end

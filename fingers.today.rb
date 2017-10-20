@@ -3,8 +3,6 @@ require "pathname"
 
 require_relative "lib/renderable_file"
 
-RenderableFile.directory_whitelist = *"pages"
-
 module ViewHelpers
   def h(text)
     Rack::Utils.escape_html(text)
