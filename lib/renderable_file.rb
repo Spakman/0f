@@ -3,7 +3,7 @@ require "pathname"
 class IllegalPagePath < StandardError; end
 
 class RenderableFile
-  attr_reader :uri_path
+  attr_reader :uri_path, :basename
 
   PAGES_ROOT = File.expand_path("#{File.dirname(__FILE__)}/../pages")
 
@@ -40,8 +40,10 @@ class RenderableFile
     if @pathname.to_s.index(PAGES_ROOT) == 0
       if @pathname.to_s.length > PAGES_ROOT.length
         @uri_path = @pathname.to_s[(PAGES_ROOT.length)..-1]
+        @basename = pathname.basename.to_s
       else
         @uri_path = ?/
+        @basename = ?/
       end
     end
   end
@@ -70,11 +72,15 @@ class RenderableFile
 
   class DirectoryIndex < RenderableFile
     def directories
-      @pathname.children.select(&:directory?).map(&:basename)
+      @pathname.children.select(&:directory?).map do |path|
+        RenderableFile.build(path.expand_path)
+      end
     end
 
     def pages
-      @pathname.children.select(&:file?).map(&:basename)
+      @pathname.children.select(&:file?).map do |path|
+        RenderableFile.build(path.expand_path)
+      end
     end
   end
 end

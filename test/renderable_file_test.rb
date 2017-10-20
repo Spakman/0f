@@ -47,5 +47,11 @@ describe RenderableFile do
       assert_equal "/hello", RenderableFile.build("hello").uri_path
       assert_equal "/", RenderableFile.build("hello/there/../../").uri_path
     end
+
+    it "sets the basename instance variable" do
+      assert_equal "hello", RenderableFile.build("hello").basename
+      assert_equal "there", RenderableFile.build("hello/over/there").basename
+      assert_equal "/", RenderableFile.build("hello/there/../../").basename
+    end
   end
 end

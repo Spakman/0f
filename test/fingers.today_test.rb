@@ -65,14 +65,21 @@ describe FingersToday do
 
     it "renders the directory_index template when the path is a directory" do
       directory = Minitest::Mock.new
+        .expect(:uri_path, "uri_path")
+        .expect(:basename, "basename")
+      page = Minitest::Mock.new
+        .expect(:uri_path, "uri_path")
+        .expect(:basename, "basename")
+      index = Minitest::Mock.new
         .expect(:file?, false)
         .expect(:directory?, true)
-        .expect(:directories, %w( dir1 dir2 ))
-        .expect(:pages, %w( page1 page1 ))
+        .expect(:directories, [ directory ])
+        .expect(:pages, [ page ])
 
-      RenderableFile.stub(:build, ->(path) { directory }) do
+      RenderableFile.stub(:build, ->(path) { index }) do
         get "/#{path}"
-        assert_includes last_response.body, "dir1"
+        index.verify
+        page.verify
         directory.verify
       end
     end
@@ -106,22 +113,6 @@ describe FingersToday do
         get "/#{path}"
         assert_equal 400, last_response.status
       end
-    end
-  end
-
-  describe "the link helper" do
-    include ViewHelpers
-
-    it "URI escapes the href" do
-      assert_includes link("text", "link with spaces"), "link%20with%20spaces"
-    end
-
-    it "HTML escapes the link text" do
-      assert_includes link("te<xt", "link"), "te&lt;xt"
-    end
-
-    it "returns a complete HTML anchor, joining URI parts together" do
-      assert_equal %{<a href="/dir/page">text</a>}, link("text", "/dir", "page"), "dir%20with%20spaces/page"
     end
   end
 end

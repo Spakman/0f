@@ -7,11 +7,6 @@ module ViewHelpers
   def h(text)
     Rack::Utils.escape_html(text)
   end
-
-  def link(text, *uri_parts)
-    escaped_uri = URI::Parser.new.escape(File.join(uri_parts))
-    %{<a href="#{escaped_uri}">#{h(text)}</a>}
-  end
 end
 
 class FingersToday < Sinatra::Base
