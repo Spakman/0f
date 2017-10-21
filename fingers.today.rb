@@ -7,6 +7,19 @@ module ViewHelpers
   def h(text)
     Rack::Utils.escape_html(text)
   end
+
+  def current_page
+    @current_page ||= RenderableFile.build(request.path[1..-1])
+  end
+
+  def breadcrumb_pages
+    page = current_page
+    pages = []
+    while page = page.parent
+      pages << page
+    end
+    pages.reverse[1..-1]
+  end
 end
 
 class FingersToday < Sinatra::Base
@@ -19,8 +32,8 @@ class FingersToday < Sinatra::Base
   helpers ViewHelpers
 
   get "/" do
-    page = RenderableFile.build("index")
-    erb :page, locals: { page: page }
+    page = RenderableFile.build("_index")
+    erb :index, locals: { page: page }
   end
 
   get "/*" do
@@ -42,7 +55,7 @@ class FingersToday < Sinatra::Base
 
   post "/" do
     return 401 unless authenticated?
-    page = RenderableFile.build("index")
+    page = RenderableFile.build("_index")
     page.save(request.body.read.strip)
     200
   end

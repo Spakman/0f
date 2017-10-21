@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="/door_theory_64.png">
-  <link href="/styles.css" rel="stylesheet" />
+  <link rel="icon" href="/door_theory_64.png" />
+  <link rel="stylesheet" href="/styles.css" />
   <% if authenticated? %>
   <script src="/contenteditable.js"></script>
   <% else %>
@@ -16,8 +16,8 @@
 </head>
 <body>
   <header>
-    <img src="/door_theory_64.png"  />
-    <h1>fingers.today</h1>
+    <a href="/"><img src="/door_theory_64.png"  /></a>
+    <%= erb :breadcrumbs %>
   </header>
 
   <main>

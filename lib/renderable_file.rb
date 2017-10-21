@@ -56,6 +56,12 @@ class RenderableFile
     File.directory?(@pathname)
   end
 
+  def parent
+    RenderableFile.build(@pathname.dirname)
+  rescue IllegalPagePath
+    nil
+  end
+
 
   class Page < RenderableFile
     def save(content)
@@ -78,9 +84,10 @@ class RenderableFile
     end
 
     def pages
-      @pathname.children.select(&:file?).map do |path|
+      pages = @pathname.children.select(&:file?).map do |path|
         RenderableFile.build(path.expand_path)
       end
+      pages.delete_if { |p| p.basename[0] == ?_ }
     end
   end
 end

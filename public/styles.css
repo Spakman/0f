@@ -1,16 +1,61 @@
+html {
+  background: rgb(240, 246, 248);
+}
+
+body {
+  margin: 20px auto 0 auto;
+  width: 850px;
+  border: 1px solid #888;
+  box-shadow: 4px 4px 4px #ccc;
+  padding: 20px;
+  background: white;
+}
+
 header {
   display: flex;
-}
-
-header img {
-  width: 64px;
+  align-items: center;
   height: 64px;
-  margin: 8px;
+  font-size: 30px;
+  margin-bottom: 20px;
 }
 
-header h1 {
-  margin-left: 8px;
-}
+  header img {
+    width: 64px;
+    height: 64px;
+    margin-top: 9px;
+  }
+
+  header h1 {
+    margin: 0;
+    margin-left: 10px;
+    padding: 0;
+    font-size: 30px;
+  }
+
+  header h1:before {
+    margin-right: 15px;
+    content: "\221E";
+  }
+
+  #breadcrumbs {
+    list-style: none;
+    display: flex;
+    margin: 0 0 0 5px;
+    padding: 0;
+  }
+
+    #breadcrumbs li {
+      padding: 10px;
+    }
+
+    #breadcrumbs li:before {
+      margin-right: 15px;
+      content: "\221E";
+    }
+
+    #breadcrumbs > li:last-of-type {
+      font-weight: bolder;
+    }
 
 article:focus {
   outline: none;
