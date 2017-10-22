@@ -65,6 +65,7 @@ class RenderableFile
 
   class Page < RenderableFile
     def save(content)
+      FileUtils.mkdir_p(@pathname.dirname)
       File.open(@pathname, "w") do |f|
         f << content
       end
@@ -77,6 +78,10 @@ class RenderableFile
 
 
   class DirectoryIndex < RenderableFile
+    def save(content)
+      raise IllegalPagePath.new("Cannot save, #{@pathname} is a directory")
+    end
+
     def directories
       @pathname.children.select(&:directory?).map do |path|
         RenderableFile.build(path.expand_path)

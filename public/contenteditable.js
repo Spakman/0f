@@ -22,7 +22,7 @@ class PageSaver {
   }
 
   performSave(content) {
-    return fetch("/", {
+    return fetch(document.URL, {
       method: "post",
       body: content
     }).catch(function(err) {

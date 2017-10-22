@@ -18,7 +18,7 @@ module ViewHelpers
     while page = page.parent
       pages << page
     end
-    pages.reverse[1..-1]
+    pages.reverse[1..-1] || []
   end
 end
 
@@ -44,7 +44,7 @@ class FingersToday < Sinatra::Base
       elsif renderable_file.directory?
         erb :directory_index, locals: { index: renderable_file }
       elsif authenticated?
-        halt 501, "This will be a new page"
+        erb :page, locals: { page: RenderableFile.build("_new_page_template") }
       else
         halt 404
       end
@@ -58,6 +58,17 @@ class FingersToday < Sinatra::Base
     page = RenderableFile.build("_index")
     page.save(request.body.read.strip)
     200
+  end
+
+  post "/*" do
+    return 401 unless authenticated?
+    begin
+      page = RenderableFile.build(params[:splat].first)
+      page.save(request.body.read.strip)
+      200
+    rescue IllegalPagePath
+      halt 400
+    end
   end
 
   run! if app_file == $0

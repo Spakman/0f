@@ -10,14 +10,30 @@ def app
   FingersToday
 end
 
-FingersToday.prepend(Module.new do
-  def authenticated?
-    true
-  end
-end)
+def ensure_authenticated
+  FingersToday.prepend(Module.new do
+    def authenticated?; true; end
+  end)
+end
+
+def ensure_not_authenticated
+  FingersToday.prepend(Module.new do
+    def authenticated?; false; end
+  end)
+end
+
+def not_authenticated(&block)
+  ensure_not_authenticated
+  yield
+  ensure_authenticated
+end
 
 
 describe FingersToday do
+  before do
+    ensure_authenticated
+  end
+
   describe "GET /" do
     let(:content) { "page_content" }
 
@@ -30,21 +46,6 @@ describe FingersToday do
         page.verify
       end
     end
-  end
-
-  describe "POST /" do
-    let(:body_with_whitespace) { " hello " }
-
-    it "saves the page" do
-      page = Minitest::Mock.new.expect(:save, true, [ body_with_whitespace.strip ])
-
-      RenderableFile.stub(:build, page) do
-        post "/", body_with_whitespace
-        page.verify
-      end
-    end
-
-    it "returns a 401 if not authenticated"
   end
 
   describe "GET a page that isn't /" do
@@ -84,15 +85,19 @@ describe FingersToday do
       end
     end
 
-    it "returns a 501 when the path doesn't exist and authenticated" do
-      no_file = Minitest::Mock.new
+    it "returns a 200 when the path doesn't exist and authenticated" do
+      build_result = Minitest::Mock.new
         .expect(:file?, false)
         .expect(:directory?, false)
+        .expect(:content, "content")
+        .expect(:uri_path, "/#{path}")
+        .expect(:parent, nil)
+        .expect(:basename, path)
 
-      RenderableFile.stub(:build, ->(path) { no_file}) do
+      RenderableFile.stub(:build, ->(path) { build_result }) do
         get "/#{path}"
-        assert_equal 501, last_response.status
-        no_file.verify
+        assert_equal 200, last_response.status
+        build_result.verify
       end
     end
 
@@ -101,10 +106,12 @@ describe FingersToday do
         .expect(:file?, false)
         .expect(:directory?, false)
 
-      RenderableFile.stub(:build, ->(path) { no_file}) do
-        get "/#{path}"
-        assert_equal 501, last_response.status
-        no_file.verify
+      not_authenticated do
+        RenderableFile.stub(:build, ->(path) { no_file }) do
+          get "/#{path}"
+          assert_equal 404, last_response.status
+          no_file.verify
+        end
       end
     end
 
@@ -112,6 +119,50 @@ describe FingersToday do
       RenderableFile.stub(:build, ->(path) { raise IllegalPagePath.new }) do
         get "/#{path}"
         assert_equal 400, last_response.status
+      end
+    end
+  end
+
+  describe "POST /" do
+    let(:body_with_whitespace) { " hello " }
+
+    it "saves the page" do
+      page = Minitest::Mock.new.expect(:save, true, [ body_with_whitespace.strip ])
+
+      RenderableFile.stub(:build, page) do
+        post "/", body_with_whitespace
+        page.verify
+        assert_equal 200, last_response.status
+      end
+    end
+
+    it "returns a 401 if not authenticated" do
+      not_authenticated do
+        post "/", body_with_whitespace
+        assert_equal 401, last_response.status
+      end
+    end
+  end
+
+  describe "POST a page that isn't /" do
+    let(:path) { "hello" }
+
+    let(:body_with_whitespace) { " hello " }
+
+    it "saves the page" do
+      page = Minitest::Mock.new.expect(:save, true, [ body_with_whitespace.strip ])
+
+      RenderableFile.stub(:build, page) do
+        post "/#{path}", body_with_whitespace
+        page.verify
+        assert_equal 200, last_response.status
+      end
+    end
+
+    it "returns a 401 if not authenticated" do
+      not_authenticated do
+        post "/#{path}", body_with_whitespace
+        assert_equal 401, last_response.status
       end
     end
   end
