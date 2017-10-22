@@ -65,8 +65,8 @@ class RenderableFile
 
   class Page < RenderableFile
     def save(content)
-      FileUtils.mkdir_p(@pathname.dirname)
-      File.open(@pathname, "w") do |f|
+      FileUtils.mkdir_p(@pathname.dirname, mode: 02770)
+      File.open(@pathname, "w", 0660) do |f|
         f << content
       end
     end
