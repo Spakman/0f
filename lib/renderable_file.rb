@@ -6,6 +6,7 @@ class RenderableFile
   attr_reader :uri_path, :basename
 
   PAGES_ROOT = File.expand_path("#{File.dirname(__FILE__)}/../pages")
+  PRIVATE_PAGES_ROOT = File.join(PAGES_ROOT, "private")
 
   class << self
     protected :new
@@ -54,6 +55,10 @@ class RenderableFile
 
   def directory?
     File.directory?(@pathname)
+  end
+
+  def private?
+    @pathname.to_s.index(PRIVATE_PAGES_ROOT)
   end
 
   def parent

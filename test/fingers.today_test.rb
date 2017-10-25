@@ -48,6 +48,24 @@ describe FingersToday do
     end
   end
 
+  describe "GET a private page" do
+    it "returns a 200 if authenticated" do
+      get "/private"
+      assert_equal 200, last_response.status
+      get "/private/page"
+      assert_equal 200, last_response.status
+    end
+
+    it "returns a 401 if not authenticated" do
+      not_authenticated do
+        get "/private"
+        assert_equal 401, last_response.status
+        get "/private/page"
+        assert_equal 401, last_response.status
+      end
+    end
+  end
+
   describe "GET a page that isn't /" do
     let(:path) { "hello" }
     let(:content) { "page_content" }

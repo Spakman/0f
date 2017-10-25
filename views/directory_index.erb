@@ -1,9 +1,9 @@
 <nav>
   <ul>
-    <% index.directories.each do |directory| %>
+    <% directories.each do |directory| %>
     <li><a href="<%= directory.uri_path %>"><%= directory.basename %></a></li>
     <% end %>
-    <% index.pages.each do |page| %>
+    <% pages.each do |page| %>
     <li><a href="<%= page.uri_path %>"><%= page.basename %></a></li>
     <% end %>
   </ul>

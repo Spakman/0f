@@ -27,6 +27,26 @@ class FingersToday < Sinatra::Base
     request.env["HTTP_X_CLIENT_AUTHENTICATED"] == "SUCCESS"
   end
 
+  def process_get(uri_path)
+    begin
+      renderable_file = RenderableFile.build(uri_path)
+      if renderable_file.file?
+        erb :page, locals: { page: renderable_file }
+      elsif renderable_file.directory?
+        erb :directory_index, locals: {
+          directories: renderable_file.directories,
+          pages: renderable_file.pages
+        }
+      elsif authenticated?
+        erb :page, locals: { page: RenderableFile.build("_new_page_template") }
+      else
+        halt 404
+      end
+    rescue IllegalPagePath
+      halt 400
+    end
+  end
+
   set :port, 6789
 
   helpers ViewHelpers
@@ -36,21 +56,13 @@ class FingersToday < Sinatra::Base
     erb :index, locals: { page: page }
   end
 
+  get "/private/?*" do
+    return 401 unless authenticated?
+    process_get(File.join("private", params[:splat].first))
+  end
+
   get "/*" do
-    begin
-      renderable_file = RenderableFile.build(params[:splat].first)
-      if renderable_file.file?
-        erb :page, locals: { page: renderable_file }
-      elsif renderable_file.directory?
-        erb :directory_index, locals: { index: renderable_file }
-      elsif authenticated?
-        erb :page, locals: { page: RenderableFile.build("_new_page_template") }
-      else
-        halt 404
-      end
-    rescue IllegalPagePath
-      halt 400
-    end
+    process_get(params[:splat].first)
   end
 
   post "/" do
