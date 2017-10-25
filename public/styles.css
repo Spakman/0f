@@ -4,7 +4,7 @@ html {
 
 body {
   margin: 20px auto 0 auto;
-  width: 850px;
+  width: 900px;
   border: 1px solid #888;
   box-shadow: 4px 4px 4px #ccc;
   padding: 20px;
@@ -56,6 +56,30 @@ header {
     #breadcrumbs > li:last-of-type {
       font-weight: bolder;
     }
+
+  #editMenu {
+    position: fixed;
+    margin-left: 850px;
+  }
+
+    #editMenu ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+      #editMenu li {
+        margin: 0;
+        padding: 0;
+      }
+
+      #editMenu li a {
+        display: block;
+        width: 50px;
+        height: 50px;
+        background: red;
+        border-radius: 25px;
+      }
 
 article:focus {
   outline: none;

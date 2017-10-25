@@ -18,6 +18,13 @@
   <header>
     <a href="/"><img src="/door_theory_64.png"  /></a>
     <%= erb :breadcrumbs %>
+    <% if authenticated? %>
+    <nav id="editMenu">
+      <ul>
+        <li><a href="/private"></a></li>
+      </ul>
+    </nav>
+    <% end %>
   </header>
 
   <main>
