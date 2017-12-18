@@ -88,16 +88,20 @@ class RenderableFile
     end
 
     def directories
-      @pathname.children.select(&:directory?).map do |path|
+      children.select(&:directory?).map do |path|
         RenderableFile.build(path.expand_path)
       end
     end
 
     def pages
-      pages = @pathname.children.select(&:file?).map do |path|
+      pages = children.select(&:file?).map do |path|
         RenderableFile.build(path.expand_path)
       end
       pages.delete_if { |p| p.basename[0] == ?_ }
+    end
+
+    private def children
+      @pathname.children.sort
     end
   end
 end
