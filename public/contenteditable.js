@@ -19,21 +19,31 @@ class Article {
   }
 
   makeElementEditable() {
-    this.element.addEventListener("click", function(ev) {
-      this.contentEditable = true;
-      this.focus();
-    });
+    this.element.addEventListener("click", this.startEditing.bind(this));
+    this.element.addEventListener("input", function() {
+      this.save();
+    }.bind(this));
 
     this.element.addEventListener("keyup", function(ev) {
       if(ev.keyCode == 27) {
-        ev.target.contentEditable = false;
-        this.ensureLinksAreClickable();
+        this.stopEditing();
       }
     }.bind(this));
+  }
 
-    this.element.addEventListener("input", function(ev) {
-      this.pageSaver.save(ev.target.innerHTML);
-    }.bind(this));
+  startEditing() {
+    this.element.contentEditable = true;
+    this.element.focus();
+  }
+
+  stopEditing() {
+    this.element.contentEditable = false;
+    this.ensureLinksAreClickable();
+    this.save({ force: true });
+  }
+
+  save(options = { force: false }) {
+    this.pageSaver.save(this.element.innerHTML, options);
   }
 
   stopPropagation(ev) {
@@ -44,13 +54,13 @@ class Article {
 
 class PageSaver {
   constructor() {
-    this.saveToServerAfter = 1;
+    this.saveToServerAfter = 10;
     this.saveCount = 0;
   }
 
-  save(content) {
+  save(content, options = { force: false }) {
     this.saveCount++;
-    if(this.saveCount >= this.saveToServerAfter) {
+    if(this.saveCount >= this.saveToServerAfter || options.force) {
       this.performSave(content).then(this.afterSave.bind(this));
     }
   }
