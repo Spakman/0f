@@ -17,7 +17,7 @@ class PageSaver {
   save(content) {
     this.saveCount++;
     if(this.saveCount >= this.saveToServerAfter) {
-      this.performSave(content).then(aftersave(response).bind(this));
+      this.performSave(content).then(this.afterSave.bind(this));
     }
   }
 
