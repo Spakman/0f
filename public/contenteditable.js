@@ -1,6 +1,47 @@
 window.onload = function() {
-  new Article(document.getElementById("editableArticle"));
+  let article = new Article(document.getElementById("editableArticle"));
+  new EditMenu(document.getElementById("editMenu"), document.getElementById("hideMenu"), article);
 };
+
+
+class EditMenu {
+  constructor(element, closeMenuElement, article) {
+    this.element = element;
+    this.closeMenuElement = closeMenuElement;
+    this.article = article;
+    this.hide();
+    this.listenToArticleEditingState();
+    this.setupCloseMenuElement();
+  }
+
+  show() {
+    this.element.classList.remove("hidden");
+  }
+
+  hide() {
+    this.element.classList.add("hidden");
+  }
+
+  listenToArticleEditingState() {
+    this.article.element.addEventListener("click", function(ev) {
+      this.show();
+    }.bind(this));
+
+    this.article.element.addEventListener("keyup", function(ev) {
+      if(ev.keyCode == 27) {
+        this.hide();
+      }
+    }.bind(this));
+  }
+
+  setupCloseMenuElement() {
+    this.closeMenuElement.addEventListener("click", function(ev) {
+      this.hide();
+      this.article.stopEditing();
+      ev.stopPropagation()
+    }.bind(this));
+  }
+}
 
 
 class Article {
@@ -26,14 +67,18 @@ class Article {
 
     this.element.addEventListener("keyup", function(ev) {
       if(ev.keyCode == 27) {
-        ev.target.contentEditable = false;
-        this.ensureLinksAreClickable();
+        this.stopEditing();
       }
     }.bind(this));
 
     this.element.addEventListener("input", function(ev) {
       this.pageSaver.save(ev.target.innerHTML);
     }.bind(this));
+  }
+
+  stopEditing() {
+    this.element.contentEditable = false;
+    this.ensureLinksAreClickable();
   }
 
   stopPropagation(ev) {

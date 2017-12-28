@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no" />
   <link rel="icon" href="/door_theory_64.png" />
   <link rel="stylesheet" href="/styles.css" />
   <% if authenticated? %>
+  <link rel="stylesheet" href="/edit-menu.css" />
   <script src="/contenteditable.js"></script>
   <% else %>
   <style>
@@ -19,16 +21,17 @@
   <header>
     <a href="/"><img src="/door_theory_64.png"  /></a>
     <%= erb :breadcrumbs %>
-    <% if authenticated? %>
-    <nav id="editMenu">
-      <ul>
-        <li><a href="/private"></a></li>
-      </ul>
-    </nav>
-    <% end %>
   </header>
 
   <main>
+    <% if authenticated? %>
+    <nav id="editMenu">
+      <ul>
+        <li><a href="/private">PRIV</a></li>
+        <li><a id="hideMenu" href="#">X</a></li>
+      </ul>
+    </nav>
+    <% end %>
     <%= yield %>
   </main>
 
