@@ -4,7 +4,7 @@
 
 html {
   background: rgb(240, 246, 248);
-  font-size: 35px;
+  font-size: 26px;
 }
 
 body {
@@ -88,3 +88,22 @@ article:focus {
 .hidden {
   display: none;
 }
+
+ul.directoryIndex {
+  margin: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+  ul.directoryIndex li {
+    padding: 3px 0px 3px 40px;
+    margin: 5px 0;
+  }
+
+  ul.directoryIndex li.directory {
+    background: url(/folder_32.png) no-repeat left top;
+  }
+
+  ul.directoryIndex li.file {
+    background: url(/file_32.png) no-repeat left top;
+  }

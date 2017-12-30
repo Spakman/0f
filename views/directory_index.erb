@@ -2,12 +2,12 @@
 </article>
 
 <nav>
-  <ul>
+  <ul class="directoryIndex">
     <% directories.each do |directory| %>
-    <li><a href="<%= directory.uri_path %>"><%= directory.basename %></a></li>
+    <li class="directory"><a href="<%= directory.uri_path %>"><%= directory.basename %></a></li>
     <% end %>
     <% pages.each do |page| %>
-    <li><a href="<%= page.uri_path %>"><%= page.basename %></a></li>
+    <li class="file"><a href="<%= page.uri_path %>"><%= page.basename %></a></li>
     <% end %>
   </ul>
 </nav>
