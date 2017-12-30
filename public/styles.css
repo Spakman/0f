@@ -37,6 +37,10 @@ and (max-width: 980px) {
   }
 }
 
+a {
+  color: #ce567e;
+}
+
 header {
   display: flex;
   align-items: center;
@@ -69,11 +73,11 @@ header {
   }
 
     #breadcrumbs li {
-      padding: 10px;
+      padding-left: 10px;
     }
 
     #breadcrumbs li:before {
-      margin-right: 15px;
+      margin-right: 10px;
       content: "\221E";
     }
 
