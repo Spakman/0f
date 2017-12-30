@@ -14,6 +14,12 @@ body {
   background: white;
 }
 
+ul.directoryIndex {
+  margin: 20px;
+  padding: 0;
+  list-style: none;
+}
+
 @media screen
 and (min-width: 981px)
 and (max-width: 3240px) {
@@ -21,6 +27,20 @@ and (max-width: 3240px) {
     margin: 20px auto;
     width: 984px;
   }
+
+  ul.directoryIndex li {
+    padding: 3px 0 0 35px;
+    margin: 5px 0;
+  }
+
+  ul.directoryIndex li.directory {
+    background: url(/folder_24.png) no-repeat left 50%;
+  }
+
+  ul.directoryIndex li.file {
+    background: url(/file_24.png) no-repeat left 50%;
+  }
+
 }
 
 @media screen
@@ -34,6 +54,19 @@ and (max-width: 980px) {
     width: 100%;
     box-shadow: none;
     border: none;
+  }
+
+  ul.directoryIndex li {
+    padding: 2px 0 0px 50px;
+    margin: 7px 0;
+  }
+
+  ul.directoryIndex li.directory {
+    background: url(/folder_32.png) no-repeat left 50%;
+  }
+
+  ul.directoryIndex li.file {
+    background: url(/file_32.png) no-repeat left 50%;
   }
 }
 
@@ -54,18 +87,8 @@ header {
     margin-top: 9px;
   }
 
-  header h1 {
-    margin: 0;
-    margin-left: 10px;
-    padding: 0;
-  }
-
-  header h1:before {
-    margin-right: 15px;
-    content: "\221E";
-  }
-
   #breadcrumbs {
+    font-size: 32px;
     list-style: none;
     display: flex;
     margin: 0 0 0 5px;
@@ -92,22 +115,3 @@ article:focus {
 .hidden {
   display: none;
 }
-
-ul.directoryIndex {
-  margin: 20px;
-  padding: 0;
-  list-style: none;
-}
-
-  ul.directoryIndex li {
-    padding: 3px 0px 3px 40px;
-    margin: 5px 0;
-  }
-
-  ul.directoryIndex li.directory {
-    background: url(/folder_32.png) no-repeat left top;
-  }
-
-  ul.directoryIndex li.file {
-    background: url(/file_32.png) no-repeat left top;
-  }
