@@ -4,7 +4,6 @@
 
 html {
   background: rgb(240, 246, 248);
-  font-size: 26px;
 }
 
 body {
@@ -23,6 +22,10 @@ ul.directoryIndex {
 @media screen
 and (min-width: 981px)
 and (max-width: 3240px) {
+  html {
+    font-size: 26px;
+  }
+
   body {
     margin: 20px auto;
     width: 984px;
@@ -45,8 +48,13 @@ and (max-width: 3240px) {
 
 @media screen
 and (max-width: 980px) {
+  article {
+    max-height: 999999px;
+  }
+
   html {
     background: white;
+    font-size: 32px;
   }
 
   body {
@@ -56,18 +64,22 @@ and (max-width: 980px) {
     border: none;
   }
 
-  ul.directoryIndex li {
-    padding: 2px 0 0px 50px;
-    margin: 7px 0;
+  ul.directoryIndex {
+    max-height: 999999px;
   }
 
-  ul.directoryIndex li.directory {
-    background: url(/folder_32.png) no-repeat left 50%;
-  }
+    ul.directoryIndex li {
+      padding: 2px 0 0px 50px;
+      margin: 7px 0;
+    }
 
-  ul.directoryIndex li.file {
-    background: url(/file_32.png) no-repeat left 50%;
-  }
+    ul.directoryIndex li.directory {
+      background: url(/folder_32.png) no-repeat left 50%;
+    }
+
+    ul.directoryIndex li.file {
+      background: url(/file_32.png) no-repeat left 50%;
+    }
 }
 
 a {
@@ -88,7 +100,6 @@ header {
   }
 
   #breadcrumbs {
-    font-size: 32px;
     list-style: none;
     display: flex;
     margin: 0 0 0 5px;
