@@ -71,14 +71,26 @@ class Article {
       }
     }.bind(this));
 
-    this.element.addEventListener("input", function(ev) {
-      this.pageSaver.save(ev.target.innerHTML);
-    }.bind(this));
+    this.element.addEventListener("input", this.save.bind(this));
+  }
+
+  save() {
+    this.pageSaver.save(this.element.innerHTML);
+  }
+
+  createAnchorsFromLinks() {
+    this.element.innerHTML =
+      this.element.innerHTML.replace(
+        /(?:http([s]?):\/\/)?((\w+[.])+\w+(\/\w*)*(\?[^\s]*)*)(?![^\s<]*>)/gi,
+        '<a href="http$1://$2">$2</a>'
+      );
   }
 
   stopEditing() {
     this.element.contentEditable = false;
+    this.createAnchorsFromLinks();
     this.ensureLinksAreClickable();
+    this.save();
   }
 
   stopPropagation(ev) {
