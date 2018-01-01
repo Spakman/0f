@@ -81,7 +81,7 @@ class Article {
   createAnchorsFromLinks() {
     this.element.innerHTML =
       this.element.innerHTML.replace(
-        /(?:http([s]?):\/\/)?((\w+[.])+\w+(\/\w*)*(\?[^\s]*)*)(?![^\s<]*>)/gi,
+        /(?:http([s]?):\/\/)?(([0-9a-zA-Z-_]+[.])+[0-9a-zA-Z-_]+(\/[0-9a-zA-Z-_]*)*(\?[^\s]*)*)(?![^\s<]*>)/gi,
         '<a href="http$1://$2">$2</a>'
       );
   }
