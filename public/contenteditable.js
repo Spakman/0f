@@ -82,7 +82,7 @@ class Article {
     this.element.innerHTML =
       this.element.innerHTML.replace(
         /(?:http([s]?):\/\/)?(([0-9a-zA-Z-_]+[.])+[0-9a-zA-Z-_]+(\/[0-9a-zA-Z-_]*)*(\?[^\s]*)*)(?![^\s<]*>)/gi,
-        '<a href="http$1://$2">$2</a>'
+        '<a href="http$1://$2">http$1://$2</a>'
       );
   }
 
