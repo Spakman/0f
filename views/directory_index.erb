@@ -4,7 +4,7 @@
 <nav>
   <ul class="directoryIndex">
     <% directories.each do |directory| %>
-    <li class="directory"><a href="<%= directory.uri_path %>"><%= directory.basename %></a></li>
+    <li class="directory"><a href="<%= directory.uri_path %>"><%= directory.basename %>/</a></li>
     <% end %>
     <% pages.each do |page| %>
     <li class="file"><a href="<%= page.uri_path %>"><%= page.basename %></a></li>
