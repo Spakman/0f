@@ -1,5 +1,8 @@
 var CACHE_NAME = "fingers.today-mostly-passthrough";
 var urlsToCache = [
+  "/styles.css",
+  "/edit-menu.css",
+  "/contenteditable.js",
   "/door_theory_64.png",
   "/file_32.png",
   "/folder_32.png",
