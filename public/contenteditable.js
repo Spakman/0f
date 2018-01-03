@@ -1,7 +1,17 @@
-window.onload = function() {
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/service-worker.js").then(function(registration) {
+      console.log("ServiceWorker registration successful");
+    }, function(err) {
+      console.log("ServiceWorker registration failed: ", err);
+    });
+  });
+}
+
+window.addEventListener("load", function() {
   let article = new Article(document.getElementById("editableArticle"));
   new EditMenu(document.getElementById("editMenu"), document.getElementById("hideMenu"), article);
-};
+});
 
 
 class EditMenu {
