@@ -130,3 +130,22 @@ article:focus {
 .hidden {
   display: none;
 }
+
+blockquote {
+  border-left: 5px solid #eee;
+  padding-left: 15px;
+  margin-left: 15px;
+}
+
+code {
+  font-family: monospace;
+  font-size: 18px;
+  background: #eee;
+  display: inline-block;
+  padding: 0 5px;
+}
+
+pre code {
+  padding: 10px;
+  width: 100%;
+}
