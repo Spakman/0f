@@ -23,12 +23,16 @@ ul.directoryIndex {
 and (min-width: 981px)
 and (max-width: 3240px) {
   html {
-    font-size: 26px;
+    font-size: 22px;
   }
 
   body {
     margin: 20px auto;
     width: 984px;
+  }
+
+  header {
+    font-size: 26px;
   }
 
   ul.directoryIndex li {
