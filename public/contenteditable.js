@@ -115,7 +115,8 @@ class PageSaver {
   performSave(content) {
     return fetch(document.URL, {
       method: "post",
-      body: content
+      body: content,
+      credentials: "include"
     }).catch(function(err) {
       console.error(err);
     });
