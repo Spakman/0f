@@ -78,17 +78,8 @@ class Article {
     this.pageSaver.save(this.element.innerHTML);
   }
 
-  createAnchorsFromLinks() {
-    this.element.innerHTML =
-      this.element.innerHTML.replace(
-        /(?:http([s]?):\/\/)(([0-9a-zA-Z-_]+[.])+[0-9a-zA-Z-_]+(\/[0-9a-zA-Z-_.#]*)*(\?[^\s"<]*)*)(?![^\s<]*>)/gi,
-        '<a href="http$1://$2">http$1://$2</a>'
-      );
-  }
-
   stopEditing() {
     this.element.contentEditable = false;
-    this.createAnchorsFromLinks();
     this.ensureLinksAreClickable();
     this.save();
   }
