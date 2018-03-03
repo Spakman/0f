@@ -34,6 +34,15 @@ and (max-width: 3240px) {
           width: 100%;
           height: 100%;
         }
+
+  #createLinkForm {
+    position: fixed;
+    top: 25%;
+    left: 35%;
+    border: 1px solid #888;
+    padding: 20px;
+    background: #eee;
+  }
 }
 
 @media screen
@@ -67,4 +76,24 @@ and (max-width: 980px) {
         width: 100%;
         height: 100%;
       }
+
+  #createLinkForm {
+    position: fixed;
+    top: 60%;
+    left: 5%;
+    border: 1px solid #888;
+    padding: 20px;
+    background: #eee;
+    width: 90%;
+    margin: 0 auto;
+  }
+
+    #createLinkForm input {
+      width: 74%;
+      font-size: 1em;
+    }
+
+    #createLinkForm button {
+      font-size: 1em;
+    }
 }

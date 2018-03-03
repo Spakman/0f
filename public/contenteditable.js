@@ -1,17 +1,21 @@
 window.onload = function() {
   let article = new Article(document.getElementById("editableArticle"));
-  new EditMenu(document.getElementById("editMenu"), document.getElementById("hideMenu"), article);
+  let createLink = new CreateLink(document.getElementById("createLinkForm"), document.getElementById("createLinkHref"), document.getElementById("createLinkButton"), article);
+  new EditMenu(document.getElementById("editMenu"), document.getElementById("hideMenu"), document.getElementById("createLink"), article, createLink);
 };
 
 
 class EditMenu {
-  constructor(element, closeMenuElement, article) {
+  constructor(element, closeMenuElement, linkMenuElement, article, createLink) {
     this.element = element;
     this.closeMenuElement = closeMenuElement;
+    this.linkMenuElement = linkMenuElement;
     this.article = article;
     this.hide();
     this.listenToArticleEditingState();
     this.setupCloseMenuElement();
+    this.createLink = createLink;
+    this.setupLinkMenuElement();
   }
 
   show() {
@@ -36,9 +40,106 @@ class EditMenu {
 
   setupCloseMenuElement() {
     this.closeMenuElement.addEventListener("click", function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
       this.hide();
+      this.createLink.hide();
       this.article.stopEditing();
-      ev.stopPropagation()
+    }.bind(this));
+  }
+
+  setupLinkMenuElement() {
+    this.linkMenuElement.addEventListener("click", function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      this.createLink.toggle();
+    }.bind(this));
+  }
+}
+
+
+class CreateLink {
+  constructor(formElement, hrefElement, buttonElement, article) {
+    this.formElement = formElement;
+    this.hrefElement = hrefElement;
+    this.buttonElement = buttonElement;
+    this.article = article;
+    this.onlyAllowButtonPressWhenHrefIsNotEmpty();
+    this.setupCreateLinkButton();
+    this.selectionToLink = null;
+  }
+
+  onlyAllowButtonPressWhenHrefIsNotEmpty() {
+    this.hrefElement.addEventListener("keyup", function(ev) {
+      if(ev.keyCode == 27) {
+        this.hide();
+        return;
+      }
+      if(this.hrefElement.value.length > 0) {
+        this.buttonElement.disabled = false;
+      }
+      else {
+        this.buttonElement.disabled = true;
+      }
+    }.bind(this));
+  }
+
+  saveSelection() {
+    var sel = window.getSelection();
+    if(sel.getRangeAt && sel.rangeCount) {
+      var ranges = [];
+      for(var i = 0, len = sel.rangeCount; i < len; ++i) {
+        ranges.push(sel.getRangeAt(i));
+      }
+      return ranges;
+    }
+    return null;
+  }
+
+  restoreSelection(savedSel) {
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    for(var i = 0, len = savedSel.length; i < len; ++i) {
+      sel.addRange(savedSel[i]);
+    }
+  }
+
+  toggle() {
+    if(this.selectionToLink) {
+      this.hide();
+    }
+    else {
+      this.display();
+    }
+  }
+
+  display() {
+    this.selectionToLink = this.saveSelection();
+    this.formElement.classList.remove("hidden");
+    this.hrefElement.focus();
+  }
+
+  hide() {
+    this.restoreSelection(this.selectionToLink);
+    this.formElement.classList.add("hidden");
+    this.selectionToLink = null;
+    this.hrefElement.value = "";
+    this.article.focus();
+  }
+
+  createLink() {
+    if(this.selectionToLink) {
+      this.restoreSelection(this.selectionToLink);
+      document.execCommand('createLink', false, this.hrefElement.value);
+      this.hide();
+    }
+  }
+
+  setupCreateLinkButton() {
+    this.buttonElement.addEventListener("click", function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      this.createLink();
     }.bind(this));
   }
 }
@@ -72,6 +173,10 @@ class Article {
     }.bind(this));
 
     this.element.addEventListener("input", this.save.bind(this));
+  }
+
+  focus() {
+    this.element.focus();
   }
 
   save() {
