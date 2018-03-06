@@ -11,6 +11,7 @@ body {
   box-shadow: 4px 4px 4px #ccc;
   padding: 20px;
   background: white;
+  color: #131516;
 }
 
 ul.directoryIndex {
@@ -23,7 +24,7 @@ ul.directoryIndex {
 and (min-width: 981px)
 and (max-width: 3240px) {
   html {
-    font-size: 22px;
+    font-size: 21px;
   }
 
   body {
@@ -122,6 +123,10 @@ header {
     #breadcrumbs > li:last-of-type {
       font-weight: bolder;
     }
+
+main {
+  line-height: 1.5;
+}
 
 article:focus {
   outline: none;
