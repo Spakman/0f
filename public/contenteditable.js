@@ -1,19 +1,31 @@
 window.onload = function() {
+  document.execCommand("defaultParagraphSeparator", false, "p");
+  document.execCommand("insertBrOnReturn", false, false);
+
   let article = new Article(document.getElementById("editableArticle"));
   let createLink = new CreateLink(document.getElementById("createLinkForm"), document.getElementById("createLinkHref"), document.getElementById("createLinkButton"), article);
-  new EditMenu(document.getElementById("editMenu"), document.getElementById("hideMenu"), document.getElementById("createLink"), article, createLink);
+  new EditMenu(
+    document.getElementById("editMenu"),
+    document.getElementById("hideMenu"),
+    document.getElementById("createLink"),
+    document.getElementById("textStyle"),
+    article,
+    createLink
+  );
 };
 
 
 class EditMenu {
-  constructor(element, closeMenuElement, linkMenuElement, article, createLink) {
+  constructor(element, closeMenuElement, linkMenuElement, textStyleElement, article, createLink) {
     this.element = element;
     this.closeMenuElement = closeMenuElement;
     this.linkMenuElement = linkMenuElement;
+    this.textStyleElement = textStyleElement;
     this.article = article;
     this.hide();
     this.listenToArticleEditingState();
     this.setupCloseMenuElement();
+    this.setupTextStyleMenu();
     this.createLink = createLink;
     this.setupLinkMenuElement();
   }
@@ -34,6 +46,55 @@ class EditMenu {
     this.article.element.addEventListener("keyup", function(ev) {
       if(ev.keyCode == 27) {
         this.hide();
+      }
+    }.bind(this));
+
+    this.article.element.addEventListener("input", this.setMenuState.bind(this));
+    this.article.element.addEventListener("click", this.setMenuState.bind(this));
+  }
+
+  elementUnderCursor() {
+    let selection = window.getSelection();
+    if (selection.rangeCount) {
+      let selectionRange = selection.getRangeAt(0);
+      let element = this.getContainer(selectionRange.endContainer);
+      if(element) {
+        return element.nodeName;
+      }
+      else {
+        return "";
+      }
+    }
+  }
+
+  getContainer(node) {
+    while (node) {
+      if (node.nodeType == 1 && /^(P|H2|UL)$/i.test(node.nodeName)) {
+        return node;
+      }
+      node = node.parentNode;
+    }
+  }
+
+  setMenuState() {
+    this.textStyleElement.value = this.elementUnderCursor();
+  }
+
+  setupTextStyleMenu() {
+    this.textStyleElement.addEventListener("change", function(ev) {
+      let currentElement = this.elementUnderCursor();
+      let selectedStyle = this.textStyleElement.value;
+
+      if(selectedStyle == "UL" && currentElement != "UL") {
+        document.execCommand('insertUnorderedList', false);
+      }
+      else if (selectedStyle != "UL" && currentElement == "UL") {
+        document.execCommand('insertUnorderedList', false);
+        document.execCommand("formatBlock", false, selectedStyle);
+      }
+
+      else {
+        document.execCommand("formatBlock", false, selectedStyle);
       }
     }.bind(this));
   }
@@ -99,8 +160,10 @@ class CreateLink {
   restoreSelection(savedSel) {
     var sel = window.getSelection();
     sel.removeAllRanges();
-    for(var i = 0, len = savedSel.length; i < len; ++i) {
-      sel.addRange(savedSel[i]);
+    if(savedSel) {
+      for(var i = 0, len = savedSel.length; i < len; ++i) {
+        sel.addRange(savedSel[i]);
+      }
     }
   }
 
