@@ -37,6 +37,15 @@ and (max-width: 3240px) {
     font-size: 26px;
   }
 
+  section {
+    float: right;
+    width: 50%;
+  }
+
+  ul.directoryIndex {
+    float: left;
+  }
+
   ul.directoryIndex li {
     padding: 3px 0 0 35px;
     margin: 5px 0;
@@ -49,7 +58,6 @@ and (max-width: 3240px) {
   ul.directoryIndex li.file {
     background: url(/file_24.png) no-repeat left 50%;
   }
-
 }
 
 @media screen
