@@ -318,6 +318,7 @@ class Article {
   }
 
   stopEditing() {
+    this.element.blur();
     this.element.contentEditable = false;
     this.body.classList.remove("editing");
     this.ensureLinksAreClickable();
