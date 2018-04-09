@@ -39,7 +39,7 @@ and (max-width: 3240px) {
         font-size: 22px;
       }
 
-  #createLinkForm {
+  #createLinkForm, #locationForm {
     position: fixed;
     top: 25%;
     left: 35%;
@@ -81,7 +81,11 @@ and (max-width: 980px) {
         height: 100%;
       }
 
-  #createLinkForm {
+    #editMenu select {
+      font-size: 65px;
+    }
+
+  #createLinkForm, #locationForm {
     position: fixed;
     top: 60%;
     left: 5%;
@@ -92,17 +96,13 @@ and (max-width: 980px) {
     margin: 0 auto;
   }
 
-    #createLinkForm input {
+    #createLinkForm input, #locationForm input {
       width: 74%;
       font-size: 1em;
     }
 
-    #createLinkForm button {
+    #createLinkForm button, #locationForm button {
       font-size: 1em;
-    }
-
-    #editMenu select {
-      font-size: 65px;
     }
 }
 

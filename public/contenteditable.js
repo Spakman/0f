@@ -4,22 +4,26 @@ window.onload = function() {
 
   let article = new Article(document.getElementById("editableArticle"));
   let createLink = new CreateLink(document.getElementById("createLinkForm"), document.getElementById("createLinkHref"), document.getElementById("createLinkButton"), article);
+  let locationChanger = new LocationChanger(document.getElementById("locationForm"), document.getElementById("locationHref"), document.getElementById("locationButton"), article);
   new EditMenu(
     document.getElementById("editMenu"),
     document.getElementById("hideMenu"),
     document.getElementById("createLink"),
+    document.getElementById("location"),
     document.getElementById("textStyle"),
     article,
-    createLink
+    createLink,
+    locationChanger
   );
 };
 
 
 class EditMenu {
-  constructor(element, closeMenuElement, linkMenuElement, textStyleElement, article, createLink) {
+  constructor(element, closeMenuElement, linkMenuElement, locationMenuElement, textStyleElement, article, createLink, locationChanger) {
     this.element = element;
     this.closeMenuElement = closeMenuElement;
     this.linkMenuElement = linkMenuElement;
+    this.locationMenuElement = locationMenuElement;
     this.textStyleElement = textStyleElement;
     this.article = article;
     this.hide();
@@ -27,7 +31,9 @@ class EditMenu {
     this.setupCloseMenuElement();
     this.setupTextStyleMenu();
     this.createLink = createLink;
+    this.locationChanger = locationChanger;
     this.setupLinkMenuElement();
+    this.setupLocationMenuElement();
   }
 
   show() {
@@ -114,6 +120,14 @@ class EditMenu {
       ev.preventDefault();
       ev.stopPropagation();
       this.createLink.toggle();
+    }.bind(this));
+  }
+
+  setupLocationMenuElement() {
+    this.locationMenuElement.addEventListener("click", function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      this.locationChanger.toggle();
     }.bind(this));
   }
 }
@@ -203,6 +217,61 @@ class CreateLink {
       ev.preventDefault();
       ev.stopPropagation();
       this.createLink();
+    }.bind(this));
+  }
+}
+
+
+class LocationChanger {
+  constructor(formElement, hrefElement, buttonElement, article) {
+    this.formElement = formElement;
+    this.hrefElement = hrefElement;
+    this.buttonElement = buttonElement;
+    this.article = article;
+    this.onlyAllowButtonPressWhenHrefIsNotEmpty();
+    this.setupGoButton();
+  }
+
+  onlyAllowButtonPressWhenHrefIsNotEmpty() {
+    this.hrefElement.addEventListener("keyup", function(ev) {
+      if(ev.keyCode == 27) {
+        this.hide();
+        return;
+      }
+      if(this.hrefElement.value.length > 0) {
+        this.buttonElement.disabled = false;
+      }
+      else {
+        this.buttonElement.disabled = true;
+      }
+    }.bind(this));
+  }
+
+  toggle() {
+    if(this.formElement.classList.contains("hidden")) {
+      this.display();
+    }
+    else {
+      this.hide();
+    }
+  }
+
+  display() {
+    this.formElement.classList.remove("hidden");
+    this.hrefElement.focus();
+  }
+
+  hide() {
+    this.formElement.classList.add("hidden");
+    this.hrefElement.value = "";
+    this.article.focus();
+  }
+
+  setupGoButton() {
+    this.buttonElement.addEventListener("click", function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      window.location.href = this.hrefElement.value;
     }.bind(this));
   }
 }

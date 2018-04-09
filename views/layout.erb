@@ -29,6 +29,7 @@
     <nav id="editMenu" class="hidden">
       <ul>
         <li><a href="/private" title="Private"><img src="/secret.png" /></a></li>
+        <li><a id="location" href="" title="Location"><img src="/right.png" /></a></li>
         <li>
           <select id="textStyle">
             <option value="P">P</option>
@@ -37,13 +38,18 @@
           </select>
         </li>
         <li><a id="createLink" href="" title="Create link"><img src="/link.png" /></a></li>
-        <li><a id="hideMenu" href="" title="Close menu"><img src="/close.png" /></a></li>
+        <li><a id="hideMenu" href="" title="Close menu"><img src="/tick.png" /></a></li>
       </ul>
     </nav>
 
     <form id="createLinkForm" class="hidden">
       <input id="createLinkHref" type="text" placeholder="href" size="50" />
       <button id="createLinkButton" disabled="false">Create link</button>
+    </form>
+
+    <form id="locationForm" class="hidden">
+      <input id="locationHref" type="text" placeholder="href" size="50" />
+      <button id="locationButton" disabled="false">Go</button>
     </form>
 
     <% end %>
