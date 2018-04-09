@@ -2,7 +2,7 @@ window.onload = function() {
   document.execCommand("defaultParagraphSeparator", false, "p");
   document.execCommand("insertBrOnReturn", false, false);
 
-  let article = new Article(document.getElementById("editableArticle"));
+  let article = new Article(document.getElementById("editableArticle"), document.body);
   let createLink = new CreateLink(document.getElementById("createLinkForm"), document.getElementById("createLinkHref"), document.getElementById("createLinkButton"), article);
   let locationChanger = new LocationChanger(document.getElementById("locationForm"), document.getElementById("locationHref"), document.getElementById("locationButton"), article);
   new EditMenu(
@@ -278,11 +278,12 @@ class LocationChanger {
 
 
 class Article {
-  constructor(element) {
+  constructor(element, body) {
     this.element = element;
     this.pageSaver = new PageSaver();
     this.ensureLinksAreClickable();
     this.makeElementEditable();
+    this.body = body;
   }
 
   ensureLinksAreClickable() {
@@ -294,9 +295,9 @@ class Article {
 
   makeElementEditable() {
     this.element.addEventListener("click", function(ev) {
-      this.contentEditable = true;
+      this.element.contentEditable = true;
       this.focus();
-    });
+    }.bind(this));
 
     this.element.addEventListener("keyup", function(ev) {
       if(ev.keyCode == 27) {
@@ -309,6 +310,7 @@ class Article {
 
   focus() {
     this.element.focus();
+    this.body.classList.add("editing");
   }
 
   save() {
@@ -317,6 +319,7 @@ class Article {
 
   stopEditing() {
     this.element.contentEditable = false;
+    this.body.classList.remove("editing");
     this.ensureLinksAreClickable();
     this.save();
   }
