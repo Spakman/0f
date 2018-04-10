@@ -107,6 +107,7 @@ describe FingersToday do
       build_result = Minitest::Mock.new
         .expect(:file?, false)
         .expect(:directory?, false)
+        .expect(:deletable?, false)
         .expect(:content, "content")
         .expect(:uri_path, "/#{path}")
         .expect(:parent, nil)
@@ -181,6 +182,49 @@ describe FingersToday do
       not_authenticated do
         post "/#{path}", body_with_whitespace
         assert_equal 401, last_response.status
+      end
+    end
+  end
+
+  describe "DELETE deletable page" do
+    it "returns a 401 if not authenticated" do
+      not_authenticated do
+        delete "/test/hello"
+        assert_equal 401, last_response.status
+      end
+    end
+
+    it "removes the page when authenticated" do
+      build_result = Minitest::Mock.new
+        .expect(:deletable?, true)
+        .expect(:delete!, true)
+        .expect(:parent, OpenStruct.new(uri_path: "/hello/"))
+
+      RenderableFile.stub(:build, ->(path) { build_result }) do
+        delete "/test/hello"
+        build_result.verify
+      end
+    end
+
+    it "returns a redirect to the parent page when authenticated" do
+      build_result = Minitest::Mock.new
+        .expect(:deletable?, true)
+        .expect(:delete!, true)
+        .expect(:parent, OpenStruct.new(uri_path: "/hello/"))
+
+      RenderableFile.stub(:build, ->(path) { build_result }) do
+        delete "/test/hello"
+        assert_equal 302, last_response.status
+      end
+    end
+
+    it "returns a 400 when trying to delete a directory" do
+      directory = Minitest::Mock.new.expect(:deletable?, false)
+
+      RenderableFile.stub(:build, ->(path) { directory }) do
+        delete "/test/hello"
+        directory.verify
+        assert 400, last_response.status
       end
     end
   end

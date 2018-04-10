@@ -29,7 +29,8 @@
     <nav id="editMenu" class="hidden">
       <ul>
         <li><a href="/private" title="Private"><img src="/secret.png" /></a></li>
-        <li><a id="location" href="" title="Location"><img src="/right.png" /></a></li>
+        <li><%= erb :delete_button, locals: { delete_enabled: (defined?(page) and page.deletable?) } %></li>
+        <li><a id="location" href="" title="Add"><img src="/add.png" /></a></li>
         <li>
           <select id="textStyle">
             <option value="P">P</option>

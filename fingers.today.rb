@@ -65,6 +65,20 @@ class FingersToday < Sinatra::Base
     process_get(params[:splat].first)
   end
 
+  delete "/*" do
+    return 401 unless authenticated?
+    begin
+      page = RenderableFile.build(params[:splat].first)
+      if page.deletable?
+        page.delete! and redirect(page.parent.uri_path)
+      else
+        fail IllegalPagePath.new
+      end
+    rescue IllegalPagePath
+      halt 400
+    end
+  end
+
   post "/" do
     return 401 unless authenticated?
     page = RenderableFile.build("_index")

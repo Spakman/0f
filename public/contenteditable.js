@@ -4,6 +4,7 @@ window.onload = function() {
 
   let article = new Article(document.getElementById("editableArticle"), document.body);
   let createLink = new CreateLink(document.getElementById("createLinkForm"), document.getElementById("createLinkHref"), document.getElementById("createLinkButton"), article);
+  let deleteItem = new DeleteItem(document.getElementById("deleteLink"), article);
   let locationChanger = new LocationChanger(document.getElementById("locationForm"), document.getElementById("locationHref"), document.getElementById("locationButton"), article);
   new EditMenu(
     document.getElementById("editMenu"),
@@ -217,6 +218,38 @@ class CreateLink {
       ev.preventDefault();
       ev.stopPropagation();
       this.createLink();
+    }.bind(this));
+  }
+}
+
+
+class DeleteItem {
+  constructor(linkElement, article) {
+    this.linkElement = linkElement;
+    if(this.linkElement) {
+      this.setupLink();
+    }
+  }
+
+  setupLink() {
+    this.linkElement.addEventListener("click", function(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      if(window.confirm("Delete this page?")) {
+        return fetch(document.URL, {
+          method: "delete",
+          credentials: "include"
+        }).catch(function(err) {
+          console.error(err);
+        }).then(function(response) {
+          if(response.redirected) {
+            window.location.href = response.url;
+          }
+          else {
+            console.error(response);
+          }
+        });
+      }
     }.bind(this));
   }
 }

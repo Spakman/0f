@@ -49,6 +49,10 @@ class RenderableFile
     end
   end
 
+  def delete!
+    @pathname.delete
+  end
+
   def file?
     File.file?(@pathname)
   end
@@ -79,6 +83,14 @@ class RenderableFile
     def content
       File.read(@pathname)
     end
+
+    def deletable?
+      if @basename[0] == ?_
+        false
+      else
+        true
+      end
+    end
   end
 
 
@@ -98,6 +110,10 @@ class RenderableFile
         RenderableFile.build(path.expand_path)
       end
       pages.delete_if { |p| p.basename[0] == ?_ }
+    end
+
+    def deletable?
+      false
     end
 
     private def children
