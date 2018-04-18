@@ -34,20 +34,6 @@ describe FingersToday do
     ensure_authenticated
   end
 
-  describe "GET /" do
-    let(:content) { "page_content" }
-
-    it "renders the page template" do
-      page = Minitest::Mock.new.expect(:content, content)
-
-      RenderableFile.stub(:build, ->(path) { page }) do
-        get "/"
-        assert_includes last_response.body, content
-        page.verify
-      end
-    end
-  end
-
   describe "GET a private page" do
     it "returns a 200 if authenticated" do
       get "/private"
@@ -120,27 +106,6 @@ describe FingersToday do
       RenderableFile.stub(:build, ->(path, named) { raise IllegalPagePath.new }) do
         get "/#{path}"
         assert_equal 400, last_response.status
-      end
-    end
-  end
-
-  describe "POST /" do
-    let(:body_with_whitespace) { " hello " }
-
-    it "saves the page" do
-      page = Minitest::Mock.new.expect(:save, true, [ body_with_whitespace.strip ])
-
-      RenderableFile.stub(:build, page) do
-        post "/", body_with_whitespace
-        page.verify
-        assert_equal 200, last_response.status
-      end
-    end
-
-    it "returns a 401 if not authenticated" do
-      not_authenticated do
-        post "/", body_with_whitespace
-        assert_equal 401, last_response.status
       end
     end
   end

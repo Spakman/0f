@@ -46,11 +46,6 @@ class FingersToday < Sinatra::Base
 
   helpers ViewHelpers
 
-  get "/" do
-    page = RenderableFile.build("_index")
-    erb :page, locals: { page: page }
-  end
-
   get "/private/?*" do
     return 401 unless authenticated?
     process_get(File.join("private", params[:splat].first))
@@ -72,13 +67,6 @@ class FingersToday < Sinatra::Base
     rescue IllegalPagePath
       halt 400
     end
-  end
-
-  post "/" do
-    return 401 unless authenticated?
-    page = RenderableFile.build("_index")
-    page.save(request.body.read.strip)
-    200
   end
 
   post "/*" do
