@@ -75,37 +75,17 @@ describe FingersToday do
         .expect(:file?, true)
         .expect(:content, content)
 
-      RenderableFile.stub(:build, ->(path) { page }) do
+      RenderableFile.stub(:build, ->(path, named) { page }) do
         get "/#{path}"
         assert_includes last_response.body, content
         page.verify
       end
     end
 
-    it "renders the directory_index template when the path is a directory" do
-      directory = Minitest::Mock.new
-        .expect(:uri_path, "uri_path")
-        .expect(:basename, "basename")
-      page = Minitest::Mock.new
-        .expect(:uri_path, "uri_path")
-        .expect(:basename, "basename")
-      index = Minitest::Mock.new
-        .expect(:file?, false)
-        .expect(:directory?, true)
-        .expect(:directories, [ directory ])
-        .expect(:pages, [ page ])
-
-      RenderableFile.stub(:build, ->(path) { index }) do
-        get "/#{path}"
-        index.verify
-        page.verify
-        directory.verify
-      end
-    end
-
     it "returns a 200 when the path doesn't exist and authenticated" do
       build_result = Minitest::Mock.new
         .expect(:file?, false)
+      new_page_template = Minitest::Mock.new
         .expect(:directory?, false)
         .expect(:deletable?, false)
         .expect(:content, "content")
@@ -113,20 +93,22 @@ describe FingersToday do
         .expect(:parent, nil)
         .expect(:basename, path)
 
-      RenderableFile.stub(:build, ->(path) { build_result }) do
+      RenderableFile.stub(:build, ->(path, named={ with_index_page: false }) do
+        named[:with_index_page] ? build_result : new_page_template
+      end) do
         get "/#{path}"
         assert_equal 200, last_response.status
         build_result.verify
+        new_page_template.verify
       end
     end
 
     it "return a 404 when path doesn't exist and is not authenticated" do
       no_file = Minitest::Mock.new
         .expect(:file?, false)
-        .expect(:directory?, false)
 
       not_authenticated do
-        RenderableFile.stub(:build, ->(path) { no_file }) do
+        RenderableFile.stub(:build,  ->(path, named) { no_file }) do
           get "/#{path}"
           assert_equal 404, last_response.status
           no_file.verify
@@ -135,7 +117,7 @@ describe FingersToday do
     end
 
     it "returns a 400 when the path is invalid" do
-      RenderableFile.stub(:build, ->(path) { raise IllegalPagePath.new }) do
+      RenderableFile.stub(:build, ->(path, named) { raise IllegalPagePath.new }) do
         get "/#{path}"
         assert_equal 400, last_response.status
       end

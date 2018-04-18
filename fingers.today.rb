@@ -29,14 +29,9 @@ class FingersToday < Sinatra::Base
 
   def process_get(uri_path)
     begin
-      renderable_file = RenderableFile.build(uri_path)
+      renderable_file = RenderableFile.build(uri_path, with_index_page: true)
       if renderable_file.file?
         erb :page, locals: { page: renderable_file }
-      elsif renderable_file.directory?
-        erb :directory_index, locals: {
-          directories: renderable_file.directories,
-          pages: renderable_file.pages
-        }
       elsif authenticated?
         erb :page, locals: { page: RenderableFile.build("_new_page_template") }
       else
@@ -53,7 +48,7 @@ class FingersToday < Sinatra::Base
 
   get "/" do
     page = RenderableFile.build("_index")
-    erb :index, locals: { page: page }
+    erb :page, locals: { page: page }
   end
 
   get "/private/?*" do
@@ -89,7 +84,7 @@ class FingersToday < Sinatra::Base
   post "/*" do
     return 401 unless authenticated?
     begin
-      page = RenderableFile.build(params[:splat].first)
+      page = RenderableFile.build(params[:splat].first, with_index_page: true)
       page.save(request.body.read.strip)
       200
     rescue IllegalPagePath

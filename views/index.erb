@@ -1,5 +1,0 @@
-<%= erb :page, locals: { page: page } %>
-<%= erb :directory_index, locals: {
-  directories: current_page.directories.delete_if { |d| d.private? },
-  pages: current_page.pages
-} %>

@@ -1,3 +1,20 @@
-    <article id="editableArticle">
-      <%= page.content %>
-    </article>
+<article id="editableArticle">
+  <%= page.content %>
+</article>
+
+<% if current_page.directory? %>
+  <%
+    directories = current_page.directories.delete_if { |d| d.private? }
+    pages = current_page.pages
+  %>
+  <nav>
+    <ul class="directoryIndex">
+      <% directories.each do |d| %>
+      <li class="directory"><a href="<%= d.uri_path %>"><%= d.basename %>/</a></li>
+      <% end %>
+      <% pages.each do |p| %>
+      <li class="file"><a href="<%= p.uri_path %>"><%= p.basename %></a></li>
+      <% end %>
+    </ul>
+  </nav>
+<% end %>

@@ -1,7 +1,6 @@
 require "minitest/autorun"
 
 require_relative "../lib/renderable_file"
-
 describe RenderableFile do
   it "cannot be instantiated directly" do
     assert_raises(NoMethodError) { RenderableFile.new("path") }
@@ -52,6 +51,22 @@ describe RenderableFile do
       assert_equal "hello", RenderableFile.build("hello").basename
       assert_equal "there", RenderableFile.build("hello/over/there").basename
       assert_equal "/", RenderableFile.build("hello/there/../../").basename
+    end
+
+    describe "a directory pathname" do
+      let(:directory_path) { "private" }
+
+      it "returns a Page instance for the _ page if with_index_page is true" do
+        File.stub(:directory?, ->(p) { true }) do
+          assert_kind_of RenderableFile::Page, RenderableFile.build(directory_path, with_index_page: true)
+        end
+      end
+
+      it "returns a DirectoryIndex instance for path if with_index_page is false" do
+        File.stub(:directory?, ->(p) { true }) do
+          assert_kind_of RenderableFile::DirectoryIndex, RenderableFile.build(directory_path, with_index_page: false)
+        end
+      end
     end
   end
 end

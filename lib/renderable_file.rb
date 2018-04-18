@@ -25,12 +25,18 @@ class RenderableFile
     end
   end
 
-  def self.build(uri_path)
+  def self.build(uri_path, with_index_page: false)
     pathname = (Pathname.new(PAGES_ROOT) + uri_path).expand_path
     check_path_is_safe!(pathname)
 
     if File.directory?(pathname)
-      DirectoryIndex.new(pathname)
+      if with_index_page
+        index_page_pathname = pathname + "_"
+        FileUtils.touch(index_page_pathname) unless File.exist?(index_page_pathname)
+        Page.new(pathname + "_")
+      else
+        DirectoryIndex.new(pathname)
+      end
     else
       Page.new(pathname)
     end
@@ -62,7 +68,7 @@ class RenderableFile
   end
 
   def private?
-    @pathname.to_s.index(PRIVATE_PAGES_ROOT)
+    @pathname.to_s == PRIVATE_PAGES_ROOT
   end
 
   def parent
@@ -114,6 +120,10 @@ class RenderableFile
 
     def deletable?
       false
+    end
+
+    def directory?
+      @pathname.directory?
     end
 
     private def children
