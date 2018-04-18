@@ -15,10 +15,19 @@ body {
   color: #131516;
 }
 
+nav {
+  pointer-events: none;
+}
+
+#editMenu, #breadcrumbs {
+  pointer-events: auto;
+}
+
 ul.directoryIndex {
   margin: 20px;
   padding: 0;
   list-style: none;
+  pointer-events: auto;
 }
 
 @media screen

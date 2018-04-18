@@ -2,7 +2,7 @@ window.onload = function() {
   document.execCommand("defaultParagraphSeparator", false, "p");
   document.execCommand("insertBrOnReturn", false, false);
 
-  let article = new Article(document.getElementById("editableArticle"), document.body);
+  let article = new Article(document.getElementById("editableArticle"), document.getElementsByTagName("main")[0], document.body);
   let createLink = new CreateLink(document.getElementById("createLinkForm"), document.getElementById("createLinkHref"), document.getElementById("createLinkButton"), article);
   let deleteItem = new DeleteItem(document.getElementById("deleteLink"), article);
   let locationChanger = new LocationChanger(document.getElementById("locationForm"), document.getElementById("locationHref"), document.getElementById("locationButton"), article);
@@ -48,6 +48,11 @@ class EditMenu {
   listenToArticleEditingState() {
     this.article.element.addEventListener("click", function(ev) {
       this.show();
+    }.bind(this));
+
+    this.article.mainElement.addEventListener("click", function(ev) {
+      this.show();
+      this.setMenuState.bind(this);
     }.bind(this));
 
     this.article.element.addEventListener("keyup", function(ev) {
@@ -311,8 +316,9 @@ class LocationChanger {
 
 
 class Article {
-  constructor(element, body) {
+  constructor(element, mainElement, body) {
     this.element = element;
+    this.mainElement = mainElement;
     this.pageSaver = new PageSaver();
     this.ensureLinksAreClickable();
     this.makeElementEditable();
@@ -320,7 +326,7 @@ class Article {
   }
 
   ensureLinksAreClickable() {
-    Array.from(this.element.getElementsByTagName("a")).forEach(function(a) {
+    Array.from(this.element.parentElement.getElementsByTagName("a")).forEach(function(a) {
       a.removeEventListener("click", this.stopPropagation);
       a.addEventListener("click", this.stopPropagation);
     }.bind(this));
@@ -328,6 +334,11 @@ class Article {
 
   makeElementEditable() {
     this.element.addEventListener("click", function(ev) {
+      this.element.contentEditable = true;
+      this.focus();
+    }.bind(this));
+
+    this.mainElement.addEventListener("click", function(ev) {
       this.element.contentEditable = true;
       this.focus();
     }.bind(this));
