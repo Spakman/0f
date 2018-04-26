@@ -47,6 +47,10 @@ and (max-width: 3240px) {
     padding: 20px;
     background: #eee;
   }
+
+  #hrefModal input {
+    margin-left: 30%;
+  }
 }
 
 @media screen
@@ -104,6 +108,19 @@ and (max-width: 980px) {
     #createLinkForm button, #locationForm button {
       font-size: 1em;
     }
+
+  #hrefModal input, #hrefModal button {
+    font-size: 1.3em;
+  }
+
+  #hrefModal input {
+    margin-left: 0;
+    width: 75%;
+  }
+
+  #hrefModal input {
+    margin-left: 5%;
+  }
 }
 
 #editMenu select {
@@ -113,8 +130,21 @@ and (max-width: 980px) {
   background: #fff;
 }
 
+#hrefModal {
+  position:absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(62, 62, 62, 0.5);
+}
+
+  #hrefModal input, #hrefModal button {
+    margin-top: 25%;
+  }
+
 body.editing {
-  background: #FFFFD4;
+  background: #ffffd4;
 }
 
 img.disabled {

@@ -8,7 +8,10 @@
   <link rel="stylesheet" href="/styles.css" />
   <% if authenticated? %>
   <link rel="stylesheet" href="/edit-menu.css" />
-  <script src="/contenteditable.js"></script>
+  <script src="/js/article.js"></script>
+  <script src="/js/page-saver.js"></script>
+  <script src="/js/edit-menu.js"></script>
+  <script src="/js/main.js"></script>
   <% else %>
   <style>
     article {
@@ -28,34 +31,31 @@
     <% if authenticated? %>
     <nav id="editMenu" class="hidden">
       <ul>
-        <li><a href="/private" title="Private"><img src="/secret.png" /></a></li>
+        <li><a id="private" href="" title="Private"><img src="/secret.png" /></a></li>
         <li><%= erb :delete_button, locals: { delete_enabled: (defined?(page) and page.deletable?) } %></li>
         <li><a id="location" href="" title="Add"><img src="/add.png" /></a></li>
         <li>
-          <select id="textStyle">
+          <select id="style">
             <option value="P">P</option>
             <option value="H2">H2</option>
             <option value="UL">UL</option>
           </select>
         </li>
-        <li><a id="createLink" href="" title="Create link"><img src="/link.png" /></a></li>
-        <li><a id="hideMenu" href="" title="Close menu"><img src="/tick.png" /></a></li>
+        <li><a id="link" href="" title="Create link"><img src="/link.png" /></a></li>
+        <li><a id="close" href="" title="Close menu"><img src="/tick.png" /></a></li>
       </ul>
+
     </nav>
-
-    <form id="createLinkForm" class="hidden">
-      <input id="createLinkHref" type="text" placeholder="href" size="50" />
-      <button id="createLinkButton" disabled="false">Create link</button>
-    </form>
-
-    <form id="locationForm" class="hidden">
-      <input id="locationHref" type="text" placeholder="href" size="50" />
-      <button id="locationButton" disabled="false">Go</button>
-    </form>
 
     <% end %>
     <%= yield %>
     <div style="clear: both;"></div>
+
+    <div id="hrefModal" class="hidden">
+      <input type="text" placeholder="href" size="50" />
+      <button>Text</button>
+    </div>
+
   </main>
 
   <footer></footer>
