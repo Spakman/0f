@@ -6,14 +6,14 @@ GEM
     minitest (5.11.3)
     mustermann (1.0.2)
     rack (2.0.4)
-    rack-protection (2.0.1)
+    rack-protection (2.0.2)
       rack
     rack-test (0.8.3)
       rack (>= 1.0, < 3)
-    sinatra (2.0.1)
+    sinatra (2.0.2)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.1)
+      rack-protection (= 2.0.2)
       tilt (~> 2.0)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
@@ -27,5 +27,5 @@ PLATFORMS
 DEPENDENCIES
   minitest
   rack-test
-  sinatra
+  sinatra (>= 2.0.2)
   thin
