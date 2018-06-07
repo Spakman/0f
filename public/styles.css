@@ -31,8 +31,7 @@ ul.directoryIndex {
 }
 
 @media screen
-and (min-width: 981px)
-and (max-width: 3240px) {
+and (min-width: 981px) {
   html {
     font-size: 21px;
   }
