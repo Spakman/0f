@@ -4,7 +4,8 @@
 
 html {
   background: rgb(240, 246, 248);
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: "Source Sans Pro", sans-serif;
+  letter-spacing: 0.2px;
 }
 
 body {
@@ -169,7 +170,7 @@ blockquote {
 }
 
 code {
-  font-family: monospace;
+  font-family: "IBM Plex Mono", monospace;
   font-size: 18px;
   background: #eee;
   display: inline-block;
