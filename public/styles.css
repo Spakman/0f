@@ -140,6 +140,7 @@ header {
     #breadcrumbs li:before {
       margin-right: 10px;
       content: "\221E";
+      font-weight: normal;
     }
 
     #breadcrumbs > li:last-of-type {
