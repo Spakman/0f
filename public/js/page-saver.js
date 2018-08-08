@@ -13,7 +13,7 @@ class PageSaver {
 
   performSave(content) {
     return fetch(document.URL, {
-      method: "post",
+      method: "put",
       body: content,
       credentials: "include"
     }).catch(function(err) {

@@ -69,7 +69,7 @@ class FingersToday < Sinatra::Base
     end
   end
 
-  post "/*" do
+  put "/*" do
     return 401 unless authenticated?
     begin
       page = RenderableFile.build(params[:splat].first, with_index_page: true)

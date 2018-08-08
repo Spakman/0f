@@ -110,7 +110,7 @@ describe FingersToday do
     end
   end
 
-  describe "POST a page that isn't /" do
+  describe "PUT a page that isn't /" do
     let(:path) { "hello" }
 
     let(:body_with_whitespace) { " hello " }
@@ -119,7 +119,7 @@ describe FingersToday do
       page = Minitest::Mock.new.expect(:save, true, [ body_with_whitespace.strip ])
 
       RenderableFile.stub(:build, page) do
-        post "/#{path}", body_with_whitespace
+        put "/#{path}", body_with_whitespace
         page.verify
         assert_equal 200, last_response.status
       end
@@ -127,7 +127,7 @@ describe FingersToday do
 
     it "returns a 401 if not authenticated" do
       not_authenticated do
-        post "/#{path}", body_with_whitespace
+        put "/#{path}", body_with_whitespace
         assert_equal 401, last_response.status
       end
     end
