@@ -66,18 +66,19 @@ class HrefModal {
 }
 
 class EditMenu {
-  constructor(element, article, hrefModalElement, privateElement, deleteElement, locationElement, styleElement, linkElement, closeElement) {
+  constructor(element, article, hrefModalElement, privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, closeElement) {
     this.element = element;
     this.article = article;
 
     this.hrefModal = new HrefModal(hrefModalElement);
-    this.buildMenuObjects(privateElement, deleteElement, locationElement, styleElement, linkElement, closeElement);
+    this.buildMenuObjects(privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, closeElement);
 
     this.listenToArticleEvents();
   }
 
-  buildMenuObjects(privateElement, deleteElement, locationElement, styleElement, linkElement, closeElement) {
+  buildMenuObjects(privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, closeElement) {
     this.privateMenuEntry = new PrivateMenuEntry(privateElement);
+    this.moveMenuEntry = new MoveMenuEntry(moveElement, this.hrefModal);
     this.deleteMenuEntry = new DeleteMenuEntry(deleteElement);
     this.locationMenuEntry = new LocationMenuEntry(locationElement, this.hrefModal);
     this.styleMenuEntry = new StyleMenuEntry(styleElement, { change: this.styleSelected.bind(this) });
@@ -143,6 +144,41 @@ class PrivateMenuEntry {
   }
 }
 
+class MoveMenuEntry {
+  constructor(element, hrefModal) {
+    this.element = element;
+    this.hrefModal = hrefModal;
+    if (element) {
+      this.element.addEventListener("click", this.getHref.bind(this));
+    }
+  }
+
+  getHref(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    this.hrefModal.capture({
+      placeholder: "Move to path",
+      value: window.location.pathname,
+      success: function(value) {
+        return fetch(value, {
+          method: "post",
+          body: window.location.pathname.substring(1),
+          credentials: "include"
+        }).then(function(response) {
+          window.location.href = value;
+        }).catch(function(err) {
+          console.error(err);
+        });
+      }
+    });
+  }
+
+  currentDirname() {
+    let parts = window.location.pathname.split("/");
+    parts.pop();
+    return parts.join("/") + "/";
+  }
+}
 class DeleteMenuEntry {
   constructor(element) {
     if(element) {

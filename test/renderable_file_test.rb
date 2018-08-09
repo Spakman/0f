@@ -68,5 +68,48 @@ describe RenderableFile do
         end
       end
     end
+
+    describe "#movable?" do
+      it "returns false if the current page is /" do
+        refute RenderableFile.build("_").movable?
+      end
+
+      it "returns false if the current page is /private" do
+        refute RenderableFile.build("private").movable?
+      end
+
+      it "returns false if the current page does not yet exist" do
+        refute RenderableFile.build("this-is-a-new-page").movable?
+      end
+    end
+
+    describe "moving to a new path" do
+      let(:old_filename) { "old_test_file" }
+      let(:new_filename) { "new_test_target" }
+      let(:new_dirname) { "new_test_dir" }
+      let(:old_full_path) { "#{RenderableFile::PAGES_ROOT}/#{old_filename}" }
+      let(:new_same_dir_full_path) { "#{RenderableFile::PAGES_ROOT}/#{new_filename}" }
+      let(:new_diff_dir_full_path) { "#{RenderableFile::PAGES_ROOT}/#{new_dirname}" }
+
+      it "moves the file to the new location in the same directory" do
+        FileUtils.touch(old_full_path)
+        assert RenderableFile.build(old_filename).move_to(new_filename)
+      ensure
+        FileUtils.rm(old_full_path, force: true)
+        FileUtils.rm(new_same_dir_full_path, force: true)
+      end
+
+      it "moves the file to the new location in a new directory" do
+        FileUtils.touch(old_full_path)
+        assert RenderableFile.build(old_filename).move_to("#{new_dirname}/#{new_filename}")
+      ensure
+        FileUtils.rm(old_full_path, force: true)
+        FileUtils.rm_r(new_diff_dir_full_path, force: true)
+      end
+
+      it "raises an IllegalPagePath exception when trying to move /private" do
+        assert_raises(IllegalPagePath) { RenderableFile.build("private").move_to("anything") }
+      end
+    end
   end
 end

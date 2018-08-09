@@ -80,5 +80,16 @@ class FingersToday < Sinatra::Base
     end
   end
 
+  post "/*" do
+    return 401 unless authenticated?
+    begin
+      old_page = RenderableFile.build(request.body.read, with_index_page: false)
+      old_page.move_to(params[:splat].first)
+      200
+    rescue IllegalPagePath
+      halt 400
+    end
+  end
+
   run! if app_file == $0
 end

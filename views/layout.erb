@@ -33,6 +33,7 @@
     <nav id="editMenu" class="hidden">
       <ul>
         <li><a id="private" href="" title="Private"><img src="/secret.png" /></a></li>
+        <li><%= erb :move_button, locals: { move_enabled: (defined?(page) and page.movable?) } %></li>
         <li><%= erb :delete_button, locals: { delete_enabled: (defined?(page) and page.deletable?) } %></li>
         <li><a id="location" href="" title="Add"><img src="/add.png" /></a></li>
         <li>

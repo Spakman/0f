@@ -13,6 +13,7 @@ window.onload = function() {
     article,
     document.getElementById("hrefModal"),
     document.getElementById("private"),
+    document.getElementById("move"),
     document.getElementById("delete"),
     document.getElementById("location"),
     document.getElementById("style"),

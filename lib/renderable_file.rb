@@ -3,7 +3,7 @@ require "pathname"
 class IllegalPagePath < StandardError; end
 
 class RenderableFile
-  attr_reader :uri_path, :basename
+  attr_reader :uri_path, :basename, :pathname
 
   PAGES_ROOT = File.expand_path("#{File.dirname(__FILE__)}/../pages")
   PRIVATE_PAGES_ROOT = File.join(PAGES_ROOT, "private")
@@ -11,7 +11,7 @@ class RenderableFile
   class << self
     protected :new
 
-    protected def check_path_is_safe!(pathname)
+    def check_path_is_safe!(pathname)
       unless pathname.to_s.start_with?(PAGES_ROOT)
         raise IllegalPagePath.new("#{pathname} is not in the pages directory: #{PAGES_ROOT}")
       end
@@ -71,10 +71,45 @@ class RenderableFile
     @pathname.to_s == PRIVATE_PAGES_ROOT
   end
 
+  def root?
+    if directory?
+      @pathname.to_s == PAGES_ROOT
+    else
+      @pathname.dirname.to_s == PAGES_ROOT && @basename == ?_
+    end
+  end
+
+  def private_root?
+    if directory?
+      @pathname.to_s == PRIVATE_PAGES_ROOT
+    else
+      @pathname.dirname.to_s == PRIVATE_PAGES_ROOT && @basename == ?_
+    end
+  end
+
+  def movable?
+    @pathname.exist? && !root? && !private_root?
+  end
+
   def parent
     RenderableFile.build(@pathname.dirname)
   rescue IllegalPagePath
     nil
+  end
+
+  def move_to(new_path)
+    if movable?
+      new_renderable_file = RenderableFile.build(new_path)
+      self.class.check_path_is_safe!(new_renderable_file.pathname)
+      FileUtils.mkdir_p(new_renderable_file.pathname.dirname)
+      begin
+        FileUtils.mv(@pathname, new_renderable_file.pathname)
+      rescue ArgumentError
+        raise IllegalPagePath.new
+      end
+    else
+      raise IllegalPagePath.new
+    end
   end
 
 

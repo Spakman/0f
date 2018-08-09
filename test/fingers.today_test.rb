@@ -74,6 +74,7 @@ describe FingersToday do
       new_page_template = Minitest::Mock.new
         .expect(:directory?, false)
         .expect(:deletable?, false)
+        .expect(:movable?, false)
         .expect(:content, "content")
         .expect(:uri_path, "/#{path}")
         .expect(:parent, nil)
@@ -173,6 +174,44 @@ describe FingersToday do
         directory.verify
         assert 400, last_response.status
       end
+    end
+  end
+
+  describe "POST a page" do
+    let(:new_path) { "new_path" }
+    let(:old_path) { "old_path" }
+
+    it "returns a 200 when moving a page" do
+      old_page = Minitest::Mock.new
+        .expect(:move_to, true, [ new_path ])
+
+      RenderableFile.stub(:build, old_page) do
+        post "/#{new_path}", old_path
+        old_page.verify
+        assert_equal 200, last_response.status
+      end
+    end
+
+    it "returns a 401 if not authenticated" do
+      not_authenticated do
+        post new_path, old_path
+        assert_equal 401, last_response.status
+      end
+    end
+
+    it "returns a 400 if trying to move /private" do
+      post new_path, "/private"
+      assert_equal 400, last_response.status
+    end
+
+    it "returns a 400 if trying to move /" do
+      post new_path, "/"
+      assert_equal 400, last_response.status
+    end
+
+    it "returns a 400 if trying to move a page that doesn't exist" do
+      post new_path, "/nothing_here"
+      assert_equal 400, last_response.status
     end
   end
 end
