@@ -20,8 +20,21 @@ class Article {
   }
 
   makeElementEditable() {
-    this.element.addEventListener("click", this.startEditing.bind(this));
-    this.mainElement.addEventListener("click", this.startEditing.bind(this));
+    this.element.addEventListener("click", function(ev) {
+      ev.ctrlKey && this.startEditing();
+    }.bind(this));
+
+    this.mainElement.addEventListener("click", function(ev) {
+      ev.ctrlKey && this.startEditing();
+    }.bind(this));
+
+    this.element.addEventListener("touchstart", function(ev) {
+      (ev.touches.length > 1) && this.startEditing();
+    }.bind(this));
+
+    this.mainElement.addEventListener("touchstart", function(ev) {
+      (ev.touches.length > 1) && this.startEditing();
+    }.bind(this));
 
     this.element.addEventListener("keyup", function(ev) {
       if(ev.keyCode == 27) {
