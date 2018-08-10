@@ -73,11 +73,11 @@ and (min-width: 981px) {
   }
 
   ul.directoryIndex li.directory {
-    background: url(/folder_24.png) no-repeat left 50%;
+    background: url(/img/folder_24.png) no-repeat left 50%;
   }
 
   ul.directoryIndex li.file {
-    background: url(/file_24.png) no-repeat left 50%;
+    background: url(/img/file_24.png) no-repeat left 50%;
   }
 }
 
@@ -123,11 +123,11 @@ and (max-width: 980px) {
     }
 
     ul.directoryIndex li.directory {
-      background: url(/folder_32.png) no-repeat left 50%;
+      background: url(/img/folder_32.png) no-repeat left 50%;
     }
 
     ul.directoryIndex li.file {
-      background: url(/file_32.png) no-repeat left 50%;
+      background: url(/img/file_32.png) no-repeat left 50%;
     }
 }
 

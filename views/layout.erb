@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, height=device-height, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no" />
-  <link rel="icon" href="/door_theory_64.png" />
+  <link rel="icon" href="/img/door_theory_64.png" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/fonts.css" />
@@ -24,7 +24,7 @@
 </head>
 <body>
   <header>
-    <a href="/" id="logoAnchor"><img src="/door_theory_64.png"  /></a>
+    <a href="/" id="logoAnchor"><img src="/img/door_theory_64.png"  /></a>
     <%= erb :breadcrumbs %>
   </header>
 
@@ -32,10 +32,10 @@
     <% if authenticated? %>
     <nav id="editMenu" class="hidden">
       <ul>
-        <li><a id="private" href="" title="Private"><img src="/secret.png" /></a></li>
+        <li><a id="private" href="" title="Private"><img src="/img/secret.png" /></a></li>
         <li><%= erb :move_button, locals: { move_enabled: (defined?(page) and page.movable?) } %></li>
         <li><%= erb :delete_button, locals: { delete_enabled: (defined?(page) and page.deletable?) } %></li>
-        <li><a id="location" href="" title="Add"><img src="/add.png" /></a></li>
+        <li><a id="location" href="" title="Add"><img src="/img/add.png" /></a></li>
         <li>
           <select id="style">
             <option value="P">P</option>
@@ -43,8 +43,8 @@
             <option value="UL">UL</option>
           </select>
         </li>
-        <li><a id="link" href="" title="Create link"><img src="/link.png" /></a></li>
-        <li><a id="close" href="" title="Close menu"><img src="/tick.png" /></a></li>
+        <li><a id="link" href="" title="Create link"><img src="/img/link.png" /></a></li>
+        <li><a id="close" href="" title="Close menu"><img src="/img/tick.png" /></a></li>
       </ul>
 
     </nav>
