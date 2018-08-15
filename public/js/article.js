@@ -1,11 +1,11 @@
 class Article {
-  constructor(element, mainElement, body) {
+  constructor(element, clickableElement, body) {
     this.element = element;
-    this.mainElement = mainElement;
+    this.clickableElement = clickableElement;
+    this.body = body;
     this.pageSaver = new PageSaver();
     this.ensureLinksAreClickable();
     this.makeElementEditable();
-    this.body = body;
   }
 
   addEventListener(name, func) {
@@ -15,24 +15,20 @@ class Article {
   ensureLinksAreClickable() {
     Array.from(this.element.parentElement.getElementsByTagName("a")).forEach(function(a) {
       a.removeEventListener("click", this.stopPropagation);
-      a.addEventListener("click", this.stopPropagation);
+      a.addEventListener("click", this.stopPropagation.bind(this));
     }.bind(this));
   }
 
   makeElementEditable() {
-    this.element.addEventListener("click", function(ev) {
-      ev.ctrlKey && this.startEditing();
+    this.clickableElement.addEventListener("click", function(ev) {
+      if (ev.ctrlKey && ev.shiftKey) {
+        window.location.href = "/private";
+      } else if (ev.ctrlKey) {
+        this.startEditing();
+      }
     }.bind(this));
 
-    this.mainElement.addEventListener("click", function(ev) {
-      ev.ctrlKey && this.startEditing();
-    }.bind(this));
-
-    this.element.addEventListener("touchstart", function(ev) {
-      (ev.touches.length > 1) && this.startEditing();
-    }.bind(this));
-
-    this.mainElement.addEventListener("touchstart", function(ev) {
+    this.clickableElement.addEventListener("touchstart", function(ev) {
       (ev.touches.length > 1) && this.startEditing();
     }.bind(this));
 
