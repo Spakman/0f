@@ -68,7 +68,7 @@ class RenderableFile
   end
 
   def private?
-    @pathname.to_s == PRIVATE_PAGES_ROOT
+    @pathname.to_s.start_with?(PRIVATE_PAGES_ROOT)
   end
 
   def root?

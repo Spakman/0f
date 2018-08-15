@@ -4,7 +4,8 @@
 
 <% if current_page.directory? %>
   <%
-    directories = current_page.directories.delete_if { |d| d.private? }
+    directories = current_page.directories
+    directories.delete_if { |d| d.private? } unless page.private?
     pages = current_page.pages
   %>
   <nav>
