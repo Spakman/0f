@@ -91,6 +91,10 @@ class RenderableFile
     @pathname.exist? && !root? && !private_root?
   end
 
+  def exist?
+    @pathname.exist?
+  end
+
   def parent
     RenderableFile.build(@pathname.dirname)
   rescue IllegalPagePath
@@ -100,12 +104,16 @@ class RenderableFile
   def move_to(new_path)
     if movable?
       new_renderable_file = RenderableFile.build(new_path)
-      self.class.check_path_is_safe!(new_renderable_file.pathname)
-      FileUtils.mkdir_p(new_renderable_file.pathname.dirname)
-      begin
-        FileUtils.mv(@pathname, new_renderable_file.pathname)
-      rescue ArgumentError
+      if new_renderable_file.exist?
         raise IllegalPagePath.new
+      else
+        self.class.check_path_is_safe!(new_renderable_file.pathname)
+        FileUtils.mkdir_p(new_renderable_file.pathname.dirname)
+        begin
+          FileUtils.mv(@pathname, new_renderable_file.pathname)
+        rescue ArgumentError
+          raise IllegalPagePath.new
+        end
       end
     else
       raise IllegalPagePath.new

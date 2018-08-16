@@ -86,6 +86,7 @@ describe RenderableFile do
     describe "moving to a new path" do
       let(:old_filename) { "old_test_file" }
       let(:new_filename) { "new_test_target" }
+      let(:existing_filename) { "existing_test_file" }
       let(:new_dirname) { "new_test_dir" }
       let(:old_full_path) { "#{RenderableFile::PAGES_ROOT}/#{old_filename}" }
       let(:new_same_dir_full_path) { "#{RenderableFile::PAGES_ROOT}/#{new_filename}" }
@@ -109,6 +110,15 @@ describe RenderableFile do
 
       it "raises an IllegalPagePath exception when trying to move /private" do
         assert_raises(IllegalPagePath) { RenderableFile.build("private").move_to("anything") }
+      end
+
+      it "raises an IllegalPagePath exception when trying to move a page to a path that already exists" do
+        FileUtils.touch(old_full_path)
+        FileUtils.touch(existing_filename)
+        assert_raises(IllegalPagePath) { RenderableFile.build("old_filename").move_to("existing_filename") }
+      ensure
+        FileUtils.rm(old_full_path, force: true)
+        FileUtils.rm(existing_filename, force: true)
       end
     end
   end

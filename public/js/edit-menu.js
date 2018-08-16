@@ -165,7 +165,12 @@ class MoveMenuEntry {
           body: window.location.pathname.substring(1),
           credentials: "include"
         }).then(function(response) {
-          window.location.href = value;
+          if (response.status == 200) {
+            window.location.href = value;
+          }
+          else {
+            alert("Target already exists!");
+          }
         }).catch(function(err) {
           console.error(err);
         });
