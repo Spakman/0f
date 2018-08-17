@@ -65,6 +65,7 @@ class Article {
     this.element.contentEditable = true;
     this.focus();
     this.body.classList.add("editing");
+    this.clickableElement.classList.add("editing");
     this.element.dispatchEvent(new Event("startediting"));
     this.cursorChanged();
   }
@@ -73,6 +74,7 @@ class Article {
     this.element.blur();
     this.element.contentEditable = false;
     this.body.classList.remove("editing");
+    this.clickableElement.classList.remove("editing");
     this.ensureLinksAreClickable();
     this.save();
     this.element.dispatchEvent(new Event("stopediting"));

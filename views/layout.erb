@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, height=device-height, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no" />
   <link rel="icon" href="/img/door_theory_64.png" />
   <link rel="manifest" href="/manifest.json" />
-  <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="/fonts.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/fonts.css" />
   <% if authenticated? %>
-  <link rel="stylesheet" href="/edit-menu.css" />
+  <link rel="stylesheet" href="/css/edit-menu.css" />
   <script src="/js/article.js"></script>
   <script src="/js/page-saver.js"></script>
   <script src="/js/edit-menu.js"></script>
@@ -21,11 +21,7 @@
   </style>
   <% end %>
   <% if page.private? %>
-  <style>
-    html {
-      background: rgba(107, 255, 68, 0.5);
-    }
-  </style>
+  <link rel="stylesheet" href="/css/private.css" />
   <% end %>
   <title>fingers.today</title>
 </head>

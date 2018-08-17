@@ -4,7 +4,7 @@ window.onload = function() {
 
   var article = new Article(
     document.getElementById("editableArticle"),
-    document,
+    document.body.parentElement,
     document.body
   );
 

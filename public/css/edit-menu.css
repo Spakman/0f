@@ -54,6 +54,10 @@ and (min-width: 981px) {
 
 @media screen
 and (max-width: 980px) {
+  html.editing {
+    background: #ffffd4;
+  }
+
   #editMenu {
     position: fixed;
     top: 0;

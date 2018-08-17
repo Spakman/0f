@@ -1,0 +1,10 @@
+html {
+  background: #b4ffa155;
+}
+
+@media screen
+and (max-width: 980px) {
+  body {
+    background: transparent;
+  }
+}

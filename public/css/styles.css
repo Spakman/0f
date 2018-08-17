@@ -3,7 +3,6 @@
 }
 
 html {
-  background: rgb(68, 176, 205, 0.275);
   font-family: "Inconsolata", monospace;
 }
 
@@ -11,7 +10,6 @@ body {
   border: 1px solid #888;
   box-shadow: 4px 4px 4px #ccc;
   padding: 20px;
-  background: white;
   color: #555;
 }
 
@@ -34,11 +32,13 @@ ul.directoryIndex {
 and (min-width: 981px) {
   html {
     font-size: 21px;
+    background: rgb(68, 176, 205, 0.275);
   }
 
   body {
     margin: 20px auto;
     width: 984px;
+    background: white;
   }
 
   header {
