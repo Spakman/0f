@@ -4,6 +4,7 @@ and (min-width: 981px) {
     position: fixed;
     margin-left: 963px;
     background: #eee;
+    width: auto;
   }
 
     #editMenu ul {

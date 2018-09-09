@@ -63,6 +63,10 @@ and (min-width: 981px) {
     width: 50%;
   }
 
+  main nav {
+    width: 50%;
+  }
+
   ul.directoryIndex {
     float: left;
   }
