@@ -5,8 +5,8 @@
 	src:
 		local('IBM Plex Mono'),
 		local('IBMPlexMono'),
-		url('/fonts/IBM_Plex_Mono_400.woff2') format('woff2'),
-		url('/fonts/IBM_Plex_Mono_400.woff') format('woff');
+		url("/fonts/IBM_Plex_Mono_400.woff2") format('woff2'),
+		url("/fonts/IBM_Plex_Mono_400.woff") format('woff');
 }
 @font-face {
 	font-family: 'Inconsolata';
@@ -14,8 +14,8 @@
 	font-weight: 400;
 	src:
 		local('Inconsolata Regular'),
-		url('/fonts/Inconsolata_400.woff2') format('woff2'),
-		url('/fonts/Inconsolata_400.woff') format('woff');
+		url("/fonts/Inconsolata_400.woff2") format('woff2'),
+		url("/fonts/Inconsolata_400.woff") format('woff');
 }
 @font-face {
 	font-family: 'Inconsolata';
@@ -23,6 +23,6 @@
 	font-weight: 700;
 	src:
 		local('Inconsolata Bold'),
-		url('/fonts/Inconsolata_700.woff2') format('woff2'),
-		url('/fonts/Inconsolata_700.woff') format('woff');
+		url("/fonts/Inconsolata_700.woff2") format('woff2'),
+		url("/fonts/Inconsolata_700.woff") format('woff');
 }
