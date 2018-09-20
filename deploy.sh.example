@@ -23,12 +23,12 @@ fingerprint_files() {
 if [ -z "$1" ]; then
   echo "Usage: deploy <gitobject>"
 else
+  revision_for_log=$(git rev-parse $1)
   git checkout -b deploy
   fingerprint_files
   git add public/* views/*
   git commit -q -m "Deploy: $(date)"
-  revision=$(git rev-parse $1)
-  git archive -o deploy.tar.gz $1
+  git archive -o deploy.tar.gz HEAD
   scp deploy.tar.gz ${hostname}:${rootpath}
   rm deploy.tar.gz
   ssh -t ${hostname} "
@@ -37,7 +37,7 @@ else
     rm deploy.tar.gz &&
     GEM_HOME=${gemhome} gem install --file Gemfile --no-user-install &&
     sudo /bin/systemctl restart fingers.today.service &&
-    echo $(date): ${revision} >> deploy.log
+    echo $(date): ${revision_for_log} >> deploy.log
   "
   git checkout -
   git branch -D deploy
