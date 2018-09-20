@@ -59,11 +59,8 @@ class FingersToday < Sinatra::Base
     return 401 unless authenticated?
     begin
       page = RenderableFile.build(params[:splat].first)
-      if page.deletable?
-        page.delete! and redirect(page.parent.uri_path)
-      else
-        fail IllegalPagePath.new
-      end
+      page.delete!
+      redirect(page.parent.uri_path)
     rescue IllegalPagePath
       halt 400
     end

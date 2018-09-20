@@ -56,7 +56,11 @@ class RenderableFile
   end
 
   def delete!
-    @pathname.delete
+    if deletable?
+      @pathname.delete
+    else
+      fail IllegalPagePath.new
+    end
   end
 
   def file?
