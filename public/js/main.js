@@ -21,5 +21,5 @@ window.onload = function() {
     document.getElementById("close")
   );
 
-  let keyboard = new Keyboard(article, editMenu);
+  let keyboard = new Keyboard(document.body, article, editMenu);
 };

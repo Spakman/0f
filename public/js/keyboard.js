@@ -1,12 +1,13 @@
 class Keyboard {
-  constructor(article, editMenu) {
+  constructor(body, article, editMenu) {
+    this.body = body;
     this.article = article;
     this.editMenu = editMenu;
     this.setupListeners();
   }
 
   setupListeners() {
-    this.article.addEventListener("keypress", function(ev) {
+    this.body.addEventListener("keypress", function(ev) {
       if(ev.keyCode == 27) {
         this.article.stopEditing();
       }
