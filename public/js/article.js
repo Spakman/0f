@@ -32,15 +32,6 @@ class Article {
       (ev.touches.length > 1) && this.startEditing();
     }.bind(this));
 
-    this.element.addEventListener("keyup", function(ev) {
-      if(ev.keyCode == 27) {
-        this.stopEditing();
-      }
-      else if(ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) {
-        this.cursorChanged();
-      }
-    }.bind(this));
-
     this.element.addEventListener("input", this.inputReceived.bind(this));
   }
 

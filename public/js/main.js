@@ -2,13 +2,13 @@ window.onload = function() {
   document.execCommand("defaultParagraphSeparator", false, "p");
   document.execCommand("insertBrOnReturn", false, false);
 
-  var article = new Article(
+  let article = new Article(
     document.getElementById("editableArticle"),
     document.body.parentElement,
     document.body
   );
 
-  var editMenu = new EditMenu(
+  let editMenu = new EditMenu(
     document.getElementById("editMenu"),
     article,
     document.getElementById("hrefModal"),
@@ -20,4 +20,6 @@ window.onload = function() {
     document.getElementById("link"),
     document.getElementById("close")
   );
+
+  let keyboard = new Keyboard(article, editMenu);
 };

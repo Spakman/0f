@@ -118,6 +118,21 @@ class StyleMenuEntry {
   select(value) {
     this.element.value = value;
   }
+
+  h2() {
+    this.element.value = "H2";
+    this.element.dispatchEvent(new Event("change"));
+  }
+
+  p() {
+    this.element.value = "P";
+    this.element.dispatchEvent(new Event("change"));
+  }
+
+  ul() {
+    this.element.value = "UL";
+    this.element.dispatchEvent(new Event("change"));
+  }
 }
 
 class LinkMenuEntry {
@@ -125,6 +140,10 @@ class LinkMenuEntry {
     this.element = element;
     this.hrefModal = hrefModal;
     this.element.addEventListener("click", this.getHref.bind(this));
+  }
+
+  click() {
+    this.element.click();
   }
 
   getHref(ev) {
