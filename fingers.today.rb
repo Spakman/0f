@@ -2,6 +2,8 @@ require "sinatra/base"
 require "pathname"
 
 require_relative "lib/renderable_file"
+require_relative "config/#{Sinatra::Application.environment}"
+
 
 module ViewHelpers
   def h(text)
@@ -22,10 +24,12 @@ module ViewHelpers
   end
 end
 
+
 class FingersToday < Sinatra::Base
-  def authenticated?
-    request.env["HTTP_X_CLIENT_AUTHENTICATED"] == "SUCCESS"
-  end
+
+  helpers ViewHelpers
+
+  include EnvironmentConfig
 
   def process_get(uri_path)
     begin
@@ -41,10 +45,6 @@ class FingersToday < Sinatra::Base
       halt 400
     end
   end
-
-  set :port, 6789
-
-  helpers ViewHelpers
 
   get "/private/?*" do
     return 401 unless authenticated?
