@@ -4,7 +4,9 @@ Description=fingers.today
 [Service]
 Type=simple
 User=user
+UMask=0002
 Enviromnent="GEM_HOME=/path/to/gem_home/"
+Environment=RACK_ENV=production
 WorkingDirectory=/path/to/fingers.today
 ExecStart=/path/to/fingers.today/fingers.today.sh
 
