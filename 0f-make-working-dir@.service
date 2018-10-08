@@ -1,0 +1,7 @@
+[Unit]
+Description=Create working directory for %i 0f site
+Before=0f@%i.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/mkdir -p /run/0f/%I/

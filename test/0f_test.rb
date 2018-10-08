@@ -1,23 +1,23 @@
 require "minitest/autorun"
 require "rack/test"
 
-require_relative "../fingers.today"
+require_relative "../0f"
 
 ENV["RACK_ENV"] = "test"
 include Rack::Test::Methods
 
 def app
-  FingersToday
+  ZeroEff
 end
 
 def ensure_authenticated
-  FingersToday.prepend(Module.new do
+  ZeroEff.prepend(Module.new do
     def authenticated?; true; end
   end)
 end
 
 def ensure_not_authenticated
-  FingersToday.prepend(Module.new do
+  ZeroEff.prepend(Module.new do
     def authenticated?; false; end
   end)
 end
@@ -29,7 +29,7 @@ def not_authenticated(&block)
 end
 
 
-describe FingersToday do
+describe ZeroEff do
   before do
     ensure_authenticated
   end

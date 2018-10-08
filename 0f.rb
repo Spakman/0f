@@ -25,7 +25,7 @@ module ViewHelpers
 end
 
 
-class FingersToday < Sinatra::Base
+class ZeroEff < Sinatra::Base
 
   helpers ViewHelpers
 

@@ -1,9 +1,8 @@
 #!/bin/sh
 
 hostname=a.hostname
-rootpath=/path/to/fingers.today/
+rootpath=/path/to/0f/
 gemhome=/path/to/gem_home/
-service_unit_filename=fingers.today.service
 
 fingerprint_files() {
   files_to_fingerprint=$(find public/{css,fonts,img,js}/* -type f)
@@ -23,8 +22,6 @@ fingerprint_files() {
 
 if [ -z "$1" ]; then
   echo "Usage: deploy <gitobject>"
-elif [ ! -f "$service_unit_filename" ]; then
-  echo "Error: fingers.today.service file does not exist"
 else
   revision_for_log=$(git rev-parse $1)
   git checkout -b deploy
@@ -33,17 +30,18 @@ else
   git commit -q -m "Deploy: $(date)"
   git archive -o deploy.tar.gz HEAD
   scp deploy.tar.gz ${hostname}:${rootpath}
-  scp ${service_unit_filename} ${hostname}:${rootpath}
+  scp 0f@.service ${hostname}:${rootpath}
+  scp 0f-make-working-dir@.service ${hostname}:${rootpath}
   rm deploy.tar.gz
   ssh -t ${hostname} "
     cd ${rootpath} &&
     tar -zxvf deploy.tar.gz &&
     rm deploy.tar.gz &&
     GEM_HOME=${gemhome} gem install --file Gemfile --no-user-install &&
-    sudo cp ${rootpath}${service_unit_filename} /etc/systemd/system/ &&
-    rm ${rootpath}${service_unit_filename} &&
+    sudo mv ${rootpath}0f@.service /etc/systemd/system/ &&
+    sudo mv ${rootpath}0f-make-working-dir@.service /etc/systemd/system/ &&
     sudo /bin/systemctl daemon-reload &&
-    sudo /bin/systemctl restart ${service_unit_filename} &&
+    sudo /bin/systemctl restart 0f@example.com &&
     echo $(date): ${revision_for_log} >> deploy.log
   "
   git checkout -
