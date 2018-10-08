@@ -2,13 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, height=device-height, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no" />
-  <link rel="reload" href="/fonts/Inconsolata_400.woff2" as="font" />
-  <link rel="reload" href="/fonts/Inconsolata_700.woff2" as="font" />
-  <link rel="icon" href="/img/door_theory_64.png" />
-  <link rel="manifest" href="/manifest.json" />
   <link rel="stylesheet" href="/css/styles.css" />
-  <link rel="stylesheet" href="/css/fonts.css" />
   <% if authenticated? %>
   <link rel="stylesheet" href="/css/edit_menu.css" />
   <script defer src="/js/page_saver.js"></script>
@@ -24,14 +18,10 @@
     }
   </style>
   <% end %>
-  <% if page.private? %>
-  <link rel="stylesheet" href="/css/private.css" />
-  <% end %>
-  <title>fingers.today</title>
+  <title>0f</title>
 </head>
 <body>
   <header>
-    <a href="/" id="logoAnchor"><img src="/img/door_theory_64.png"  /></a>
     <%= erb :breadcrumbs %>
   </header>
 
@@ -55,15 +45,14 @@
       </ul>
 
     </nav>
-
     <% end %>
+
     <%= yield %>
 
     <div id="hrefModal" class="hidden">
       <input type="text" placeholder="href" size="50" />
       <button>Text</button>
     </div>
-
   </main>
 
   <footer></footer>

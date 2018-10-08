@@ -73,7 +73,6 @@ describe ZeroEff do
         .expect(:file?, false)
       new_page_template = Minitest::Mock.new
         .expect(:directory?, false)
-        .expect(:private?, false)
         .expect(:deletable?, false)
         .expect(:movable?, false)
         .expect(:content, "content")
