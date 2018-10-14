@@ -1,0 +1,46 @@
+#!/bin/sh
+
+domain=$1
+zeroeff_path=/data/0f
+site_path=/data/0f/sites/${domain}
+
+fingerprint_files() {
+  files_to_fingerprint=$(find public/{css,fonts,img,js}/* -type f)
+  filename_glob_to_replace={views/,public/css/}
+
+  for filename in $files_to_fingerprint
+  do
+    echo "Fingerprinting ${filename}"
+
+    fingerprint=$(sha256sum $filename | awk '{print $1}')
+    new_filename=$(echo $filename | awk -F . '{print $1 ".'"$fingerprint".'" $2}')
+    old_pathname=$(echo $filename | sed -e "s@public/@/@g")
+    new_pathname=$(echo $new_filename | sed -e "s@public/@/@g")
+
+    # TODO: figure out how to make {} args a variable here --> weather is too nice for doing that now :-)
+    files_to_rewrite=$(grep -rl "\"$old_pathname\"" {views/,public/css/})
+    for file in $files_to_rewrite
+    do
+      echo "Rewriting ${file}"
+      mkdir -p $(dirname ${file})
+      sed -i -e "s@\"${old_pathname}\"@\"${new_pathname}\"@g" $file
+    done
+
+    mkdir -p $(dirname ${new_filename})
+    cp $filename ${new_filename}
+  done
+}
+
+if [ -z "$domain" ]; then
+  echo "Usage: 0f <domain>"
+else
+  rm -rf ${site_path}/assets/*
+  sudo /bin/systemctl stop 0f@${domain}.service &&
+  sudo mount -t overlay overlay -o index=off,upperdir=${site_path}/assets,lowerdir=${site_path}/lib:${zeroeff_path}/lib,workdir=${site_path}/workdir-install ${site_path}/install/ &&
+  cd ${site_path}/install &&
+  fingerprint_files &&
+  sudo umount -l ${site_path}/install/ &&
+  sleep 1 &&
+  sudo /bin/systemctl start 0f@${domain}.service &&
+  echo "Fingerprinting assets complete"
+fi
