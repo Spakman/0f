@@ -17,7 +17,7 @@ PermissionsStartOnly=True
 
 WorkingDirectory=/run/0f/%i/
 
-ExecStartPre=/bin/mount -t overlay overlay -o ro,index=off,lowerdir=/data/0f/lib/:/data/0f/sites/%i/lib/,upperdir=/data/0f/sites/%i/assets/,workdir=/data/0f/sites/%i/workdir/ /run/0f/%i/
+ExecStartPre=/bin/mount -t overlay overlay -o ro,index=off,lowerdir=/data/0f/sites/%i/assets/:/data/0f/sites/%i/lib/:/data/0f/lib/ /run/0f/%i/
 ExecStartPre=/bin/mount --bind /data/0f/sites/%i/pages/ /run/0f/%i/pages/
 
 ExecStart=/usr/local/bin/ruby /run/0f/%i/0f.rb
