@@ -1,46 +1,107 @@
-#!/bin/sh
+#!/usr/bin/env ruby
+require "optparse"
+require "pathname"
 
-domain=$1
-zeroeff_path=/data/0f
-site_path=/data/0f/sites/${domain}
 
-fingerprint_files() {
-  files_to_fingerprint=$(find public/{css,fonts,img,js}/* -type f)
-  filename_glob_to_replace={views/,public/css/}
+$0 = "0f #{ARGV.join(" ")}"
 
-  for filename in $files_to_fingerprint
-  do
-    echo "Fingerprinting ${filename}"
+def puts_error_and_exit(message, exit_code: 128, prefix: "Argument error: ")
+  $stderr.puts "#{prefix}#{message}"
+  exit exit_code
+end
 
-    fingerprint=$(sha256sum $filename | awk '{print $1}')
-    new_filename=$(echo $filename | awk -F . '{print $1 ".'"$fingerprint".'" $2}')
-    old_pathname=$(echo $filename | sed -e "s@public/@/@g")
-    new_pathname=$(echo $new_filename | sed -e "s@public/@/@g")
 
-    # TODO: figure out how to make {} args a variable here --> weather is too nice for doing that now :-)
-    files_to_rewrite=$(grep -rl "\"$old_pathname\"" {views/,public/css/})
-    for file in $files_to_rewrite
-    do
-      echo "Rewriting ${file}"
-      mkdir -p $(dirname ${file})
-      sed -i -e "s@\"${old_pathname}\"@\"${new_pathname}\"@g" $file
-    done
+begin
+  options = {}
+  OptionParser.new do |opts|
+    opts.banner = "Usage: 0f [options]"
 
-    mkdir -p $(dirname ${new_filename})
-    cp $filename ${new_filename}
-  done
-}
+    opts.on("-b", "--base-dir BASEDIR", "Path to the root of the 0f directory.") do |base_dir|
+      options[:base_dir] = base_dir.chomp(?/)
+    end
 
-if [ -z "$domain" ]; then
-  echo "Usage: 0f <domain>"
-else
-  rm -rf ${site_path}/assets/*
-  sudo /bin/systemctl stop 0f@${domain}.service &&
-  sudo mount -t overlay overlay -o index=off,upperdir=${site_path}/assets,lowerdir=${site_path}/lib:${zeroeff_path}/lib,workdir=${site_path}/workdir-install ${site_path}/install/ &&
-  cd ${site_path}/install &&
-  fingerprint_files &&
-  sudo umount -l ${site_path}/install/ &&
-  sleep 1 &&
-  sudo /bin/systemctl start 0f@${domain}.service &&
-  echo "Fingerprinting assets complete"
-fi
+    opts.on("-d", "--domain DOMAIN", "Domain name of the site to interact with.") do |domain|
+      options[:domain] = domain
+    end
+
+    opts.on("-s", "--install-systemd-service [SERVICEFILES]", Array, "Install the passed comma-separated list of .service files to systemd. Requires -b.") do |service_files|
+      options[:service_files] = service_files
+    end
+
+    opts.on("-n", "--install-nginx NGINXCONFIGFILE", "Install the passed .conf file to nginx.") do |nginx_config_file|
+      options[:nginx_config_file] = nginx_config_file
+    end
+
+    opts.on("-f", "--fingerprint", "Fingerprint files in public/{css,font,js,img} and store in assets/. Requires -d. Implies -r.") do
+      options[:fingerprint] = true
+      options[:restart] = true
+    end
+
+    opts.on("-r", "--restart", "Restart the systemd service for the site. Requires -d.") do
+      options[:restart] = true
+    end
+
+    opts.on("-h", "--history", "Record revision to pages/ if there are any changes. Requires -d.") do
+      options[:history] = true
+    end
+  end.parse!
+rescue OptionParser::InvalidOption => exception
+  puts_error_and_exit(exception.message, prefix: "")
+end
+
+
+if options[:service_files]
+  puts_error_and_exit("--install-service-files requires --base-dir") unless options[:base_dir]
+end
+
+if options[:domain]
+  puts_error_and_exit("--domain requires --base-dir") unless options[:base_dir]
+end
+
+if options[:fingerprint]
+  puts_error_and_exit("--fingerprint requires --domain") unless options[:domain]
+end
+
+if options[:restart]
+  puts_error_and_exit("--restart requires --domain") unless options[:domain]
+end
+
+if options[:history]
+  puts_error_and_exit("--history requires --domain") unless options[:domain]
+end
+
+
+if options[:nginx_config_file]
+  $stderr.puts "Installing nginx config is not yet implemented."
+  exit 0
+end
+
+if options[:service_files]
+  options[:service_files].each do |service_file|
+    puts "/usr/bin/mv #{service_file} /etc/systemd/system/"
+    system "/usr/bin/mv #{service_file} /etc/systemd/system/"
+  end
+  puts "/bin/systemctl daemon-reload"
+  system "/bin/systemctl daemon-reload"
+
+  (Pathname.new(options[:base_dir]) + "sites").children.each do |domain|
+    puts "/bin/systemctl restart 0f@#{File.basename(domain)}.service"
+    system "/bin/systemctl restart 0f@#{File.basename(domain)}.service"
+  end
+end
+
+if options[:history]
+  $stderr.puts "Snapshotting pages is not yet implemented."
+  exit 0
+end
+
+if options[:fingerprint]
+  puts :Fingerprinting
+  puts "#{File.dirname(__FILE__)}/fingerprint.sh #{options[:base_dir]} #{options[:domain]}"
+  system "#{File.dirname(__FILE__)}/fingerprint.sh #{options[:base_dir]} #{options[:domain]}"
+end
+
+if options[:restart]
+  puts "/bin/systemctl restart 0f@#{options[:domain]}.service"
+  system "/bin/systemctl restart 0f@#{options[:domain]}.service"
+end

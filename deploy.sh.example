@@ -1,34 +1,16 @@
 #!/bin/sh
 
 hostname=a.hostname
-rootpath=/path/to/0f/
+domain=example.com
+base_dir=/path/to/0f/
+rootpath=${base_dir%/}/lib
 gemhome=/path/to/gem_home/
-
-fingerprint_files() {
-  files_to_fingerprint=$(find public/{css,fonts,img,js}/* -type f)
-  filename_glob_to_replace="views/*.erb public/css/*.css"
-
-  for filename in $files_to_fingerprint
-  do
-    fingerprint=$(sha256sum $filename | awk '{print $1}')
-    new_filename=$(echo $filename | awk -F . '{print $1 ".'"$fingerprint".'" $2}')
-    old_pathname=$(echo $filename | sed -e "s@public/@/@g")
-    new_pathname=$(echo $new_filename | sed -e "s@public/@/@g")
-
-    find $filename_glob_to_replace -type f -exec sed -i -e "s@\"${old_pathname}\"@\"${new_pathname}\"@g" {} \;
-    mv $filename $new_filename
-  done
-}
 
 if [ -z "$1" ]; then
   echo "Usage: deploy <gitobject>"
 else
   revision_for_log=$(git rev-parse $1)
-  git checkout -b deploy
-  fingerprint_files
-  git add public/* views/*
-  git commit -q -m "Deploy: $(date)"
-  git archive -o deploy.tar.gz HEAD
+  git archive -o deploy.tar.gz $revision_for_log
   scp deploy.tar.gz ${hostname}:${rootpath}
   scp 0f@.service ${hostname}:${rootpath}
   scp 0f-make-working-dir@.service ${hostname}:${rootpath}
@@ -38,12 +20,10 @@ else
     tar -zxvf deploy.tar.gz &&
     rm deploy.tar.gz &&
     GEM_HOME=${gemhome} gem install --file Gemfile --no-user-install &&
-    sudo mv ${rootpath}0f@.service /etc/systemd/system/ &&
-    sudo mv ${rootpath}0f-make-working-dir@.service /etc/systemd/system/ &&
-    sudo /bin/systemctl daemon-reload &&
-    sudo /bin/systemctl restart 0f@example.com &&
+    sudo PATH=$PATH ${rootpath}/bin/0f --base-dir ${base_dir} \
+                            --domain ${domain} \
+                            --fingerprint \
+                            --install-systemd-service 0f@.service,0f-make-working-dir@.service &&
     echo $(date): ${revision_for_log} >> deploy.log
   "
-  git checkout -
-  git branch -D deploy
 fi
