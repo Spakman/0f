@@ -14,6 +14,8 @@ else
   scp deploy.tar.gz ${hostname}:${rootpath}
   scp 0f@.service ${hostname}:${rootpath}
   scp 0f-make-working-dir@.service ${hostname}:${rootpath}
+  scp 0f-snapshot-pages@.service ${hostname}:${rootpath}
+  scp 0f-snapshot-pages@.timer ${hostname}:${rootpath}
   rm deploy.tar.gz
   ssh -t ${hostname} "
     cd ${rootpath} &&
@@ -23,7 +25,7 @@ else
     sudo PATH=$PATH ${rootpath}/bin/0f --base-dir ${base_dir} \
                             --domain ${domain} \
                             --fingerprint \
-                            --install-systemd-service 0f@.service,0f-make-working-dir@.service &&
+                            --install-systemd-service 0f@.service,0f-make-working-dir@.service,0f-snapshot-pages@.service,0f-snapshot-pages@.timer &&
     echo $(date): ${revision_for_log} >> deploy.log
   "
 fi

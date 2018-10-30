@@ -37,10 +37,11 @@ if [ -z "$domain" ]; then
 else
   rm -rf ${site_path}/assets/*
   /bin/systemctl stop 0f@${domain}.service &&
-  mount -t overlay overlay -o index=off,upperdir=${site_path}/assets,lowerdir=${site_path}/lib:${base_dir}/lib,workdir=${site_path}/workdir-install ${site_path}/install/ &&
-  cd ${site_path}/install &&
+  mount -t overlay overlay -o index=off,upperdir=${site_path}/assets/,lowerdir=${site_path}/lib/:${base_dir}/lib/,workdir=${site_path}/mnt/workdir-install/ ${site_path}/mnt/install/ &&
+  cd ${site_path}/mnt/install/ &&
   fingerprint_files &&
-  umount -l ${site_path}/install/ &&
+  chown -R ${domain}:${domain} ${site_path}/assets/ &&
+  umount -l ${site_path}/mnt/install/ &&
   sleep 1 &&
   /bin/systemctl start 0f@${domain}.service &&
   echo "Fingerprinting assets complete"

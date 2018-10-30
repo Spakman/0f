@@ -40,10 +40,6 @@ begin
     opts.on("-r", "--restart", "Restart the systemd service for the site. Requires -d.") do
       options[:restart] = true
     end
-
-    opts.on("-h", "--history", "Record revision to pages/ if there are any changes. Requires -d.") do
-      options[:history] = true
-    end
   end.parse!
 rescue OptionParser::InvalidOption => exception
   puts_error_and_exit(exception.message, prefix: "")
@@ -66,10 +62,6 @@ if options[:restart]
   puts_error_and_exit("--restart requires --domain") unless options[:domain]
 end
 
-if options[:history]
-  puts_error_and_exit("--history requires --domain") unless options[:domain]
-end
-
 
 if options[:nginx_config_file]
   $stderr.puts "Installing nginx config is not yet implemented."
@@ -88,11 +80,6 @@ if options[:service_files]
     puts "/bin/systemctl restart 0f@#{File.basename(domain)}.service"
     system "/bin/systemctl restart 0f@#{File.basename(domain)}.service"
   end
-end
-
-if options[:history]
-  $stderr.puts "Snapshotting pages is not yet implemented."
-  exit 0
 end
 
 if options[:fingerprint]
