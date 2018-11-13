@@ -83,7 +83,7 @@ class EditMenu {
     this.locationMenuEntry = new LocationMenuEntry(locationElement, this.hrefModal);
     this.styleMenuEntry = new StyleMenuEntry(styleElement, { change: this.styleSelected.bind(this) });
     this.linkMenuEntry = new LinkMenuEntry(linkElement, this.hrefModal);
-    this.shareMenuEntry = new ShareMenuEntry(shareElement);
+    this.shareMenuEntry = new ShareMenuEntry(shareElement, { success: this.closeClicked.bind(this) });
     this.closeMenuEntry = new CloseMenuEntry(closeElement, { click: this.closeClicked.bind(this) });
   }
 
@@ -126,8 +126,10 @@ class EditMenu {
   };
 
   closeClicked(ev) {
-    ev.preventDefault();
-    ev.stopPropagation();
+    if(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
     this.article.stopEditing();
   }
 }

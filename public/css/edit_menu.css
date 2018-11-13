@@ -64,6 +64,7 @@ and (max-width: 980px) {
     top: 0;
     right: 0;
     background: #eee;
+    width: 50%;
   }
 
     #editMenu ul {

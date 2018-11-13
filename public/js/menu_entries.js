@@ -188,8 +188,9 @@ class LinkMenuEntry {
 }
 
 class ShareMenuEntry {
-  constructor(element) {
+  constructor(element, callbacks) {
     this.element = element;
+    this.callbacks = callbacks;
     if(navigator.share !== undefined) {
       this.element.addEventListener("click", this.shareURI.bind(this))
     }
@@ -200,7 +201,19 @@ class ShareMenuEntry {
 
   shareURI(ev) {
     ev.preventDefault();
-    navigator.share({title: "", text: "", url: window.location.href}).then(() => console.log('Successful share'), error => console.log('Error sharing:', error));
+    navigator.share({title: "", text: "", url: window.location.href})
+      .then(function() {
+        console.log("Share success!");
+        if(this.callbacks.success) {
+          this.callbacks.success();
+        }
+      }.bind(this))
+      .catch(function() {
+        console.log("Share failure!");
+        if(this.callbacks.failure) {
+          this.callbacks.failure();
+        }
+      }.bind(this));
   }
 }
 
