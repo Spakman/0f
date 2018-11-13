@@ -51,6 +51,7 @@ class MoveMenuEntry {
     return parts.join("/") + "/";
   }
 }
+
 class DeleteMenuEntry {
   constructor(element) {
     if(element) {
@@ -183,6 +184,23 @@ class LinkMenuEntry {
         sel.addRange(savedSel[i]);
       }
     }
+  }
+}
+
+class ShareMenuEntry {
+  constructor(element) {
+    this.element = element;
+    if(navigator.share !== undefined) {
+      this.element.addEventListener("click", this.shareURI.bind(this))
+    }
+    else {
+      this.element.parentElement.remove();
+    }
+  }
+
+  shareURI(ev) {
+    ev.preventDefault();
+    navigator.share({title: "", text: "", url: window.location.href}).then(() => console.log('Successful share'), error => console.log('Error sharing:', error));
   }
 }
 

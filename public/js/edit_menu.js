@@ -66,23 +66,24 @@ class HrefModal {
 }
 
 class EditMenu {
-  constructor(element, article, hrefModalElement, privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, closeElement) {
+  constructor(element, article, hrefModalElement, privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, shareElement, closeElement) {
     this.element = element;
     this.article = article;
 
     this.hrefModal = new HrefModal(hrefModalElement);
-    this.buildMenuObjects(privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, closeElement);
+    this.buildMenuObjects(privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, shareElement, closeElement);
 
     this.listenToArticleEvents();
   }
 
-  buildMenuObjects(privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, closeElement) {
+  buildMenuObjects(privateElement, moveElement, deleteElement, locationElement, styleElement, linkElement, shareElement, closeElement) {
     this.privateMenuEntry = new PrivateMenuEntry(privateElement);
     this.moveMenuEntry = new MoveMenuEntry(moveElement, this.hrefModal);
     this.deleteMenuEntry = new DeleteMenuEntry(deleteElement);
     this.locationMenuEntry = new LocationMenuEntry(locationElement, this.hrefModal);
     this.styleMenuEntry = new StyleMenuEntry(styleElement, { change: this.styleSelected.bind(this) });
     this.linkMenuEntry = new LinkMenuEntry(linkElement, this.hrefModal);
+    this.shareMenuEntry = new ShareMenuEntry(shareElement);
     this.closeMenuEntry = new CloseMenuEntry(closeElement, { click: this.closeClicked.bind(this) });
   }
 

@@ -18,6 +18,7 @@ window.onload = function() {
     document.getElementById("location"),
     document.getElementById("style"),
     document.getElementById("link"),
+    document.getElementById("share"),
     document.getElementById("close")
   );
 
