@@ -5,7 +5,7 @@ GEM
     eventmachine (1.2.5)
     minitest (5.11.3)
     mustermann (1.0.2)
-    rack (2.0.4)
+    rack (2.0.6)
     rack-protection (2.0.4)
       rack
     rack-test (0.8.3)
@@ -26,6 +26,7 @@ PLATFORMS
 
 DEPENDENCIES
   minitest
+  rack (>= 2.0.6)
   rack-test
   sinatra (>= 2.0.4)
   thin
