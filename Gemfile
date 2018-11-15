@@ -1,4 +1,4 @@
-gem "sinatra", ">= 2.0.3"
+gem "sinatra", ">= 2.0.4"
 gem "thin"
 
 group :test do
