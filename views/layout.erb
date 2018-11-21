@@ -32,7 +32,7 @@
         <li><a id="private" href="" title="Private"><img src="/img/secret.png" /></a></li>
         <li><%= erb :move_button, locals: { move_enabled: (defined?(page) and page.movable?) } %></li>
         <li><%= erb :delete_button, locals: { delete_enabled: (defined?(page) and page.deletable?) } %></li>
-        <li><a id="location" href="" title="Add"><img src="/img/add.png" /></a></li>
+        <li><a id="location" href="" title="Add" data-directory="<%= page.directory %>"><img src="/img/add.png" /></a></li>
         <li>
           <select id="style">
             <option value="P">P</option>

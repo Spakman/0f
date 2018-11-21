@@ -101,9 +101,7 @@ class LocationMenuEntry {
   }
 
   currentDirname() {
-    let parts = window.location.pathname.split("/");
-    parts.pop();
-    return parts.join("/") + "/";
+    return this.element.dataset.directory;
   }
 }
 

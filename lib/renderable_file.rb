@@ -144,6 +144,10 @@ class RenderableFile
         true
       end
     end
+
+    def directory
+      "#{parent.uri_path}/".sub(%r{//$}, "/")
+    end
   end
 
 
@@ -171,6 +175,10 @@ class RenderableFile
 
     def directory?
       @pathname.directory?
+    end
+
+    def directory
+      "#{uri_path}/".sub(%r{//$}, "/")
     end
 
     private def children
