@@ -1,5 +1,6 @@
 class PageSaver {
-  constructor() {
+  constructor(callbacks) {
+    this.callbacks = callbacks;
     this.saveToServerAfter = 1;
     this.saveCount = 0;
   }
@@ -24,8 +25,12 @@ class PageSaver {
   afterSave(response) {
     if(response.ok) {
       this.saveCount = 0;
+      this.callbacks.success();
       return;
     }
-    throw new Error("Save failed.");
+    else {
+      this.callbacks.failure();
+      return;
+    }
   }
 }

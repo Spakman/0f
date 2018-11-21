@@ -3,7 +3,14 @@ class Article {
     this.element = element;
     this.clickableElement = clickableElement;
     this.body = body;
-    this.pageSaver = new PageSaver();
+    this.pageSaver = new PageSaver({
+      success: function() {
+        this.body.classList.remove("not-saved");
+      }.bind(this),
+      failure: function() {
+        this.body.classList.add("not-saved");
+      }.bind(this)
+    });
     this.ensureLinksAreClickable();
     this.makeElementEditable();
   }

@@ -9,3 +9,7 @@ nav {
 #editMenu, #breadcrumbs {
   pointer-events: auto;
 }
+
+.not-saved {
+  background: #f04b4b80 !important;
+}
