@@ -18,19 +18,15 @@ class PageSaver {
       body: content,
       credentials: "include"
     }).catch(function(err) {
+      this.callbacks.failure();
       console.error(err);
-    });
+    }.bind(this));
   }
 
   afterSave(response) {
     if(response.ok) {
       this.saveCount = 0;
       this.callbacks.success();
-      return;
-    }
-    else {
-      this.callbacks.failure();
-      return;
     }
   }
 }
