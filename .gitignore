@@ -1,6 +1,7 @@
 *.swp
 *.swo
 pages/
+log/
 deploy.sh
 fingers.today.service
 deploy.log
