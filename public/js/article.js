@@ -78,6 +78,10 @@ class Article {
     this.element.dispatchEvent(new Event("stopediting"));
   }
 
+  editing() {
+    return this.body.classList.contains("editing");
+  }
+
   stopPropagation(ev) {
     ev.stopPropagation();
   }

@@ -4,6 +4,10 @@ class PrivateMenuEntry {
     this.element.addEventListener("click", this.navigateToPrivate);
   }
 
+  click() {
+    this.element.click();
+  }
+
   navigateToPrivate(ev) {
     ev.preventDefault();
     ev.stopPropagation();
@@ -86,6 +90,10 @@ class LocationMenuEntry {
     this.element = element;
     this.hrefModal = hrefModal;
     this.element.addEventListener("click", this.getHref.bind(this));
+  }
+
+  click() {
+    this.element.click();
   }
 
   getHref(ev) {
