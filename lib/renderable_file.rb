@@ -1,4 +1,6 @@
+require "ffi-xattr"
 require "pathname"
+require "time"
 
 class IllegalPagePath < StandardError; end
 
@@ -53,6 +55,7 @@ class RenderableFile
         @basename = ?/
       end
     end
+    @xattr = Xattr.new(@pathname) rescue Errno::ENOENT
   end
 
   def delete!
@@ -124,6 +127,20 @@ class RenderableFile
     end
   end
 
+  def created
+    unless @xattr["user.0f.created"]
+      @xattr["user.0f.created"] = last_modified
+    end
+    Time.parse(@xattr["user.0f.created"])
+  end
+
+  def last_modified
+    unless @xattr["user.0f.last_modified"]
+      @xattr["user.0f.last_modified"] = File.mtime(@pathname)
+    end
+    Time.parse(@xattr["user.0f.last_modified"])
+  end
+
 
   class Page < RenderableFile
     def save(content)
@@ -131,6 +148,7 @@ class RenderableFile
       File.open(@pathname, "w", 0660) do |f|
         f << content
       end
+      @xattr["user.0f.last_modified"] = Time.now
     end
 
     def content

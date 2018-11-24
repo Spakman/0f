@@ -72,7 +72,9 @@ describe ZeroEff do
       build_result = Minitest::Mock.new
         .expect(:file?, false)
       new_page_template = Minitest::Mock.new
-        .expect(:current_directory, "/")
+        .expect(:created, Time.now)
+        .expect(:last_modified, Time.now)
+        .expect(:directory, "/")
         .expect(:directory?, false)
         .expect(:deletable?, false)
         .expect(:movable?, false)
