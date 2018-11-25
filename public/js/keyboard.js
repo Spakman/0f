@@ -60,6 +60,12 @@ class Keyboard {
           this.article.startEditing();
           this.editMenu.locationMenuEntry.click();
         }
+        // a navigates to /
+        else if(ev.charCode == 97) {
+          ev.preventDefault();
+          this.article.startEditing();
+          this.editMenu.locationMenuEntry.click();
+        }
       }
     }.bind(this));
   }
