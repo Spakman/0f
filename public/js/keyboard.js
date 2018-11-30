@@ -44,24 +44,28 @@ class Keyboard {
         }
       }
       else {
-        // h navigates to /
-        if(ev.charCode == 104) {
+        if(/[a-zA-Z0-1]/.test(ev.key) && !ev.ctrlKey && !ev.altKey && !ev.metaKey && ev.key.length == 1) {
+          ev.preventDefault();
+          let link = Array.from(document.querySelectorAll("main a:not(.editMenu)")).find(function(a) {
+            return a.innerHTML[0] == ev.key;
+          });
+          if (link) {
+            window.location.href = link.href;
+          }
+        }
+
+        // / navigates to /
+        if(ev.charCode == 47) {
           ev.preventDefault();
           window.location.href = "/";
         }
-        // p navigates to /private/
-        else if(ev.charCode == 112) {
+        // . navigates to /private/
+        else if(ev.charCode == 46) {
           ev.preventDefault();
           this.editMenu.privateMenuEntry.click();
         }
         // right-alt-a opens the add page dialog
         else if(ev.charCode == 230) {
-          ev.preventDefault();
-          this.article.startEditing();
-          this.editMenu.locationMenuEntry.click();
-        }
-        // a navigates to /
-        else if(ev.charCode == 97) {
           ev.preventDefault();
           this.article.startEditing();
           this.editMenu.locationMenuEntry.click();
