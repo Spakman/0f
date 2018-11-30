@@ -12,6 +12,6 @@ WorkingDirectory=/data/0f/sites/%i/mnt/snapshot/
 
 ExecStartPre=/bin/mount -t overlay overlay -o index=off,upperdir=/data/0f/sites/%i/pages.git/,lowerdir=/data/0f/sites/%i/pages/,workdir=/data/0f/sites/%i/mnt/workdir-pages-git/ /data/0f/sites/%i/mnt/snapshot/
 
-ExecStart=/bin/sh -c "git add -A && /bin/git commit -m 'Automated snapshot' || echo done"
+ExecStart=/bin/sh -c "find . -print0 | xargs -0 getfattr -d > pages.metadata && git add -A && /bin/git commit -m 'Automated snapshot' || echo done"
 
 ExecStopPost=/bin/umount -l /data/0f/sites/%i/mnt/snapshot/
