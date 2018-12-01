@@ -1,0 +1,18 @@
+html {
+  background: #b4ffa155;
+}
+
+h2 {
+  color: #44b0cd;
+}
+
+a:hover {
+  color: #bbcf51;
+}
+
+@media screen
+and (max-width: 980px) {
+  body {
+    background: transparent;
+  }
+}

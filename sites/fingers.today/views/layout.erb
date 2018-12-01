@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no" />
+  <link rel="reload" href="/fonts/Inconsolata_400.woff2" as="font" />
+  <link rel="reload" href="/fonts/Inconsolata_700.woff2" as="font" />
+  <link rel="icon" href="/img/door_theory_64.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/fonts.css" />
+  <% if authenticated? %>
+  <link rel="stylesheet" href="/css/edit_menu.css" />
+  <script defer src="/js/page_saver.js"></script>
+  <script defer src="/js/article.js"></script>
+  <script defer src="/js/edit_menu.js"></script>
+  <script defer src="/js/menu_entries.js"></script>
+  <script defer src="/js/keyboard.js"></script>
+  <script defer src="/js/main.js"></script>
+  <% else %>
+  <style>
+    article {
+      cursor: default;
+    }
+  </style>
+  <% end %>
+  <% if page.private? %>
+  <link rel="stylesheet" href="/css/private.css" />
+  <% end %>
+  <title>fingers.today</title>
+</head>
+<body>
+  <header>
+    <a href="/" id="logoAnchor"><img src="/img/door_theory_64.png"  /></a>
+    <%= erb :breadcrumbs %>
+  </header>
+
+  <main>
+    <% if authenticated? %>
+    <nav id="editMenu" class="hidden">
+      <ul>
+        <li><a id="private" class="editMenu" href="" title="Private"><img src="/img/secret.png" /></a></li>
+        <li><%= erb :move_button, locals: { move_enabled: (defined?(page) and page.movable?) } %></li>
+        <li><%= erb :delete_button, locals: { delete_enabled: (defined?(page) and page.deletable?) } %></li>
+        <li><a id="location" class="editMenu" href="" title="Add" data-directory="<%= page.directory %>"><img src="/img/add.png" /></a></li>
+        <li>
+          <select id="style">
+            <option value="P">P</option>
+            <option value="H2">H2</option>
+            <option value="UL">UL</option>
+          </select>
+        </li>
+        <li><a id="link" class="editMenu" href="" title="Create link"><img src="/img/link.png" /></a></li>
+        <li><a id="share" class="editMenu" href="" title="Share URI"><img src="/img/share.png" /></a></li>
+        <li><a id="close" class="editMenu" href="" title="Close menu"><img src="/img/tick.png" /></a></li>
+      </ul>
+
+    </nav>
+
+    <% end %>
+    <%= yield %>
+
+    <div id="hrefModal" class="hidden">
+      <input type="text" placeholder="href" size="50" />
+      <button>Text</button>
+    </div>
+
+  </main>
+
+  <footer>
+    <ul id="metadata">
+      <li>Last modified: <%= page.last_modified.strftime("%d %B %Y") %></li>
+      <li>Created: <%= page.created.strftime("%d %B %Y") %></li>
+    </ul>
+  </footer>
+</body>
+</html>
