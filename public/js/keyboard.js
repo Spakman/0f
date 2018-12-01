@@ -64,6 +64,11 @@ class Keyboard {
           ev.preventDefault();
           this.editMenu.privateMenuEntry.click();
         }
+        // , starts editing
+        else if(ev.key == ",") {
+          ev.preventDefault();
+          this.article.startEditing();
+        }
         // right-alt-a opens the add page dialog
         else if(ev.charCode == 230) {
           ev.preventDefault();
