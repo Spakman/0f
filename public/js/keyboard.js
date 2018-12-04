@@ -59,6 +59,17 @@ class Keyboard {
           ev.preventDefault();
           window.location.href = "/";
         }
+        // \ navigates up a breadcrumb level
+        else if(ev.key == "\\") {
+          ev.preventDefault();
+          let breadcrumbLinks = Array.from(document.querySelectorAll("#breadcrumbs a"));
+          if (breadcrumbLinks.length > 0) {
+            window.location.href = breadcrumbLinks[breadcrumbLinks.length-1].href;
+          }
+          else {
+            window.location.href = "/";
+          }
+        }
         // . navigates to /private/
         else if(ev.charCode == 46) {
           ev.preventDefault();
