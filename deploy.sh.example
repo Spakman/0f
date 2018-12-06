@@ -3,7 +3,7 @@
 hostname=a.hostname
 domain=example.com
 base_dir=/path/to/0f/
-rootpath=${base_dir%/}/lib
+rootpath=${base_dir%/}/lib/
 gemhome=/path/to/gem_home/
 
 if [ -z "$1" ]; then
@@ -19,10 +19,12 @@ else
   rm deploy.tar.gz
   ssh -t ${hostname} "
     cd ${rootpath} &&
+    find ${rootpath} ! -name deploy.log ! -name deploy.tar.gz ! -name lib -print -delete &&
     tar -zxvf deploy.tar.gz &&
     rm deploy.tar.gz &&
+    mkdir ${rootpath}pages ${rootpath}log &&
     GEM_HOME=${gemhome} gem install --file Gemfile --no-user-install &&
-    sudo PATH=$PATH ${rootpath}/bin/0f --base-dir ${base_dir} \
+    sudo PATH=$PATH ${rootpath%/}/bin/0f --base-dir ${base_dir} \
                             --domain ${domain} \
                             --fingerprint \
                             --install-systemd-service 0f@.service,0f-make-working-dir@.service,0f-snapshot-pages@.service,0f-snapshot-pages@.timer &&
