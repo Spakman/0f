@@ -17,7 +17,7 @@ PermissionsStartOnly=True
 
 WorkingDirectory=/run/0f/%i/
 
-ExecStartPre=/bin/mount -t overlay overlay -o ro,index=off,lowerdir=/data/0f/sites/%i/assets/:/data/0f/sites/%i/lib/:/data/0f/lib/ /run/0f/%i/
+ExecStartPre=/bin/mount -t overlay overlay -o ro,index=off,lowerdir=/data/0f/sites/%i/install/:/data/0f/sites/%i/lib/:/data/0f/lib/ /run/0f/%i/
 ExecStartPre=/bin/mount --bind /data/0f/sites/%i/pages/ /run/0f/%i/pages/
 ExecStartPre=/bin/mkdir -p /run/0f/%i/log/
 ExecStartPre=/bin/mount --bind /data/0f/sites/%i/log/ /run/0f/%i/log/

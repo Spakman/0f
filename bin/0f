@@ -32,7 +32,7 @@ begin
       options[:nginx_config_file] = nginx_config_file
     end
 
-    opts.on("-f", "--fingerprint", "Fingerprint files in public/{css,font,js,img} and store in assets/. Requires -d. Implies -r.") do
+    opts.on("-f", "--fingerprint", "Fingerprint files in public/{css,font,js,img} and store in install/. Requires -d. Implies -r.") do
       options[:fingerprint] = true
       options[:restart] = true
     end

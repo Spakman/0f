@@ -35,14 +35,14 @@ fingerprint_files() {
 if [ -z "$domain" ]; then
   echo "Usage: fingerprint.sh <0f base dir> <domain>"
 else
-  rm -rf ${site_path}/assets/*
+  rm -rf ${site_path}/install/*
   /bin/systemctl stop 0f@${domain}.service &&
-  mount -t overlay overlay -o index=off,upperdir=${site_path}/assets/,lowerdir=${site_path}/lib/:${base_dir}/lib/,workdir=${site_path}/mnt/workdir-install/ ${site_path}/mnt/install/ &&
+  mount -t overlay overlay -o index=off,upperdir=${site_path}/install/,lowerdir=${site_path}/lib/:${base_dir}/lib/,workdir=${site_path}/mnt/workdir-install/ ${site_path}/mnt/install/ &&
   cd ${site_path}/mnt/install/ &&
   fingerprint_files &&
-  chown -R ${domain}:${domain} ${site_path}/assets/ &&
+  chown -R ${domain}:${domain} ${site_path}/install/ &&
   umount -l ${site_path}/mnt/install/ &&
   sleep 1 &&
   /bin/systemctl start 0f@${domain}.service &&
-  echo "Fingerprinting assets complete"
+  echo "Fingerprinting install complete"
 fi
