@@ -7,14 +7,18 @@ class Keyboard {
   }
 
   setupListeners() {
-    this.body.addEventListener("keypress", function(ev) {
+    this.body.addEventListener("keydown", function(ev) {
       if(this.article.editing()) {
         // escape cancels editing
         if(ev.keyCode == 27) {
           this.article.stopEditing();
         }
+      }
+    }.bind(this));
+    this.body.addEventListener("keypress", function(ev) {
+      if(this.article.editing()) {
         // arrow keys
-        else if(ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) {
+        if(ev.keyCode == 37 || ev.keyCode == 38 || ev.keyCode == 39 || ev.keyCode == 40) {
           this.article.cursorChanged();
         }
         // right-alt-l opens the link dialog
