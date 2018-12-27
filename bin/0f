@@ -64,8 +64,12 @@ end
 
 
 if options[:nginx_config_file]
-  $stderr.puts "Installing nginx config is not yet implemented."
-  exit 0
+  puts "/usr/bin/mv #{options[:nginx_config_file]} /etc/nginx/conf.d/"
+  system "/usr/bin/mv #{options[:nginx_config_file]} /etc/nginx/conf.d/"
+  puts "/bin/systemctl daemon-reload"
+  system "/bin/systemctl daemon-reload"
+  puts "/bin/systemctl restart nginx.service"
+  system "/bin/systemctl restart nginx.service"
 end
 
 if options[:service_files]

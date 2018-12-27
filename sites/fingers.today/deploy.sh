@@ -18,7 +18,7 @@ else
     find ${rootpath} ! -name deploy.tar.gz ! -name lib -print -delete &&
     tar -zxvf deploy.tar.gz &&
     rm deploy.tar.gz &&
-    sudo PATH=$PATH ${base_dir%/}/lib/bin/0f --base-dir ${base_dir} --domain ${domain} --fingerprint &&
+    sudo PATH=$PATH ${base_dir%/}/lib/bin/0f --base-dir ${base_dir} --domain ${domain} --install-nginx ${domain}.conf --fingerprint &&
     echo $(date): ${revision_for_log} >> ${site_base_dir}log/deploy.log
   "
 fi
