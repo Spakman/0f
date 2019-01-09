@@ -3,17 +3,20 @@ GEM
   specs:
     daemons (1.2.6)
     eventmachine (1.2.5)
+    ffi (1.10.0)
+    ffi-xattr (0.1.2)
+      ffi
     minitest (5.11.3)
     mustermann (1.0.2)
     rack (2.0.6)
-    rack-protection (2.0.4)
+    rack-protection (2.0.5)
       rack
     rack-test (0.8.3)
       rack (>= 1.0, < 3)
-    sinatra (2.0.4)
+    sinatra (2.0.5)
       mustermann (~> 1.0)
       rack (~> 2.0)
-      rack-protection (= 2.0.4)
+      rack-protection (= 2.0.5)
       tilt (~> 2.0)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
@@ -25,8 +28,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  ffi-xattr
   minitest
   rack (>= 2.0.6)
   rack-test
-  sinatra (>= 2.0.4)
+  sinatra (>= 2.0.5)
   thin
