@@ -3,3 +3,6 @@ Description=Run 0f-snapshot-pages.service every 30 minutes
 
 [Timer]
 OnCalendar=*:0/30
+
+[Install]
+WantedBy=timers.target
