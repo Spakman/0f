@@ -27,7 +27,7 @@ else
     sudo PATH=$PATH ${rootpath%/}/bin/0f --base-dir ${base_dir} \
                             --domain ${domain} \
                             --fingerprint \
-                            --install-systemd-service 0f@.service,0f-make-working-dir@.service,0f-snapshot-pages@.service,0f-snapshot-pages@.timer &&
+                            --install-systemd-service systemd/0f@.service,systemd/0f-make-working-dir@.service,systemd/0f-snapshot-pages@.service,systemd/0f-snapshot-pages@.timer &&
     echo $(date): ${revision_for_log} >> deploy.log
   "
 fi
