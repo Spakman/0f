@@ -1,13 +1,10 @@
 #!/bin/sh
 
-# Read file of local deletes to process and rsync them up one at a time
-# TODO: implement!
+domain=${1}
+deletes_file=/run/0f/${domain}/log/deletes
 
-# sync up
-rsync -v -a -u -X -A -e "ssh -p3237 -i $HOME/.ssh/id_rsa" /data/0f/sites/fingers.today/pages/ fingers.today@fingers.today:./sites/fingers.today/pages/ &&
+rsync --exclude-from ${deletes_file} --delete -v -a -u -X -A -e "ssh -p3237 -i $HOME/.ssh/id_rsa" ${domain}@${domain}:./sites/${domain}/pages/ /data/0f/sites/${domain}/pages/ &&
 
-# sync down
-rsync -v -a -u -X -A -e "ssh -p3237 -i $HOME/.ssh/id_rsa" fingers.today@fingers.today:./sites/fingers.today/pages/ /data/0f/sites/fingers.today/pages/
+echo "" > ${deletes_file} &&
 
-# Read file of server deletes and rm them
-# TODO: implement!
+rsync --delete -v -a -u -X -A -e "ssh -p3237 -i $HOME/.ssh/id_rsa" /data/0f/sites/${domain}/pages/ ${domain}@${domain}:./sites/${domain}/pages/
