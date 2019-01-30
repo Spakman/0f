@@ -10,7 +10,7 @@ class Keyboard {
     this.body.addEventListener("keydown", function(ev) {
       if(this.article.editing()) {
         // escape cancels editing
-        if(ev.keyCode == 27) {
+        if(ev.keyCode == 27 && ev.ctrlKey) {
           this.article.stopEditing();
         }
       }
@@ -48,34 +48,8 @@ class Keyboard {
         }
       }
       else {
-        if(/[a-zA-Z0-1]/.test(ev.key) && !ev.ctrlKey && !ev.altKey && !ev.metaKey && ev.key.length == 1) {
-          ev.preventDefault();
-          let link = Array.from(document.querySelectorAll("main a:not(.editMenu)")).find(function(a) {
-            return a.innerHTML[0] == ev.key;
-          });
-          if (link) {
-            window.location.href = link.href;
-          }
-        }
-
-        // / navigates to /
-        if(ev.charCode == 47) {
-          ev.preventDefault();
-          window.location.href = "/";
-        }
-        // \ navigates up a breadcrumb level
-        else if(ev.key == "\\") {
-          ev.preventDefault();
-          let breadcrumbLinks = Array.from(document.querySelectorAll("#breadcrumbs a"));
-          if (breadcrumbLinks.length > 0) {
-            window.location.href = breadcrumbLinks[breadcrumbLinks.length-1].href;
-          }
-          else {
-            window.location.href = "/";
-          }
-        }
-        // . navigates to /private/
-        else if(ev.charCode == 46) {
+        // # navigates to /private/
+        if(ev.key == "#") {
           ev.preventDefault();
           this.editMenu.privateMenuEntry.click();
         }
