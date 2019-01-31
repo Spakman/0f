@@ -4,4 +4,4 @@ Before=0f@%i.service
 
 [Service]
 Type=oneshot
-ExecStart=/bin/mkdir -p /run/0f/%I/
+ExecStart=/bin/mkdir -p /run/0f/%i/

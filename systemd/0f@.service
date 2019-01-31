@@ -17,16 +17,11 @@ PermissionsStartOnly=True
 
 WorkingDirectory=/run/0f/%i/
 
-ExecStartPre=/bin/mount -t overlay overlay -o ro,index=off,lowerdir=/data/0f/sites/%i/install/:/data/0f/sites/%i/lib/:/data/0f/lib/ /run/0f/%i/
-ExecStartPre=/bin/mount --bind /data/0f/sites/%i/pages/ /run/0f/%i/pages/
-ExecStartPre=/bin/mkdir -p /run/0f/%i/log/
-ExecStartPre=/bin/mount --bind /data/0f/sites/%i/log/ /run/0f/%i/log/
+ExecStartPre=/bin/mount -t overlay overlay -o index=off,workdir=/data/0f/sites/%i/mnt/workdir-upper/,upperdir=/data/0f/sites/%i/data/,lowerdir=/data/0f/sites/%i/install/:/data/0f/sites/%i/lib/:/data/0f/lib/ /run/0f/%i/
 
 ExecStart=/usr/local/bin/ruby /run/0f/%i/0f.rb
 
-ExecStopPost=/bin/sh -c "/bin/umount /run/0f/%I/log/ && sleep 0.5"
-ExecStopPost=/bin/sh -c "/bin/umount /run/0f/%I/pages/ && sleep 0.5"
-ExecStopPost=/bin/sh -c "/bin/umount -l /run/0f/%i/ && sleep 0.5"
+ExecStopPost=/bin/umount -l /run/0f/%i/
 
 [Install]
 WantedBy=multi-user.target
