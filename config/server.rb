@@ -13,6 +13,8 @@ module EnvironmentConfig
       mod.before {
         env["rack.errors"] =  error_logger
       }
+
+      Sync.const_set(:EXCLUDES_FILE_PATH, "/dev/null")
     end
   end
 end

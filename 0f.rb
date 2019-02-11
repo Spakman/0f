@@ -1,11 +1,12 @@
 require "sinatra/base"
 require "pathname"
 
+require_relative "lib/renderable_file"
+require_relative "lib/sync"
 environment = %w( server localhost ).detect(-> { "development" }) do |env|
-  env == ENV["0F_ENV"]
+  env == ENV["ZEROEFF_ENV"]
 end
 require_relative "config/#{environment}"
-require_relative "lib/renderable_file"
 
 
 module ViewHelpers
@@ -62,6 +63,7 @@ class ZeroEff < Sinatra::Base
     return 401 unless authenticated?
     begin
       page = RenderableFile.build(params[:splat].first)
+      Sync.append_to_excludes(page.uri_path)
       page.delete!
       redirect(page.parent.uri_path)
     rescue IllegalPagePath
@@ -84,7 +86,9 @@ class ZeroEff < Sinatra::Base
     return 401 unless authenticated?
     begin
       old_page = RenderableFile.build(request.body.read, with_index_page: false)
-      old_page.move_to(params[:splat].first)
+      new_uri_path = params[:splat].first
+      Sync.append_to_excludes(old_page.uri_path, new_uri_path)
+      old_page.move_to(new_uri_path)
       200
     rescue IllegalPagePath
       halt 400
