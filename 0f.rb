@@ -1,8 +1,11 @@
 require "sinatra/base"
 require "pathname"
 
+environment = %w( server localhost ).detect(-> { "development" }) do |env|
+  env == ENV["0F_ENV"]
+end
+require_relative "config/#{environment}"
 require_relative "lib/renderable_file"
-require_relative "config/#{Sinatra::Application.environment}"
 
 
 module ViewHelpers

@@ -9,6 +9,7 @@ Type=simple
 
 Environment=GEM_HOME=/var/gem/0f/
 Environment=RACK_ENV=production
+Environment=0F_ENV=server
 
 User=%I
 Group=%i
