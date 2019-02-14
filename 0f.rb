@@ -41,7 +41,7 @@ class ZeroEff < Sinatra::Base
       if renderable_file.file?
         erb :page, locals: { page: renderable_file }
       elsif authenticated?
-        erb :page, locals: { page: RenderableFile.build("_new_page_template") }
+        erb :page, locals: { page: RenderableFile.build("_new_page_template"), new_page: true }
       else
         halt 404
       end
@@ -75,6 +75,7 @@ class ZeroEff < Sinatra::Base
     return 401 unless authenticated?
     begin
       page = RenderableFile.build(params[:splat].first, with_index_page: true)
+      Sync.append_to_excludes(page.uri_path) if request.env["HTTP_X_ZEROEFF_NEW_PAGE"]
       page.save(request.body.read.strip)
       200
     rescue IllegalPagePath

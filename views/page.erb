@@ -1,4 +1,4 @@
-<article id="editableArticle">
+<article id="editableArticle"<%= defined?(new_page) ? " data-new-page" : "" %>>
   <%= page.content %>
 </article>
 

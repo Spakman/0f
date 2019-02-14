@@ -5,17 +5,22 @@ class PageSaver {
     this.saveCount = 0;
   }
 
-  save(content) {
+  save(article) {
     this.saveCount++;
     if(this.saveCount >= this.saveToServerAfter) {
-      this.performSave(content).then(this.afterSave.bind(this));
+      this.performSave(article).then(this.afterSave.bind(this, article));
     }
   }
 
-  performSave(content) {
+  performSave(article) {
+    let headers = {};
+    if(article.dataset.newPage !== undefined) {
+      headers["X-ZEROEFF-NEW-PAGE"] = "true";
+    }
     return fetch(document.URL, {
       method: "put",
-      body: content,
+      body: article.innerHTML,
+      headers: headers,
       credentials: "include"
     }).catch(function(err) {
       this.callbacks.failure();
@@ -23,10 +28,11 @@ class PageSaver {
     }.bind(this));
   }
 
-  afterSave(response) {
+  afterSave(article, response) {
     if(response.ok) {
       this.saveCount = 0;
       this.callbacks.success();
+      article.removeAttribute("data-new-page");
     }
   }
 }

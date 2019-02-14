@@ -56,7 +56,7 @@ class Article {
   }
 
   save() {
-    this.pageSaver.save(this.element.innerHTML);
+    this.pageSaver.save(this.element);
   }
 
   startEditing() {
