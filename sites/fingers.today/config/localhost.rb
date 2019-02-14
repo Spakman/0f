@@ -14,7 +14,7 @@ module EnvironmentConfig
         env["rack.errors"] =  error_logger
       }
 
-      Sync.const_set(:EXCLUDES_FILE_PATH, "/dev/null")
+      Sync.const_set(:EXCLUDES_FILE_PATH, "/data/fingers.today/log/sync-excludes")
     end
   end
 end
