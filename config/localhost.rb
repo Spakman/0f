@@ -15,6 +15,8 @@ module EnvironmentConfig
       }
 
       Sync.const_set(:EXCLUDES_FILE_PATH, "/dev/null")
+
+      def Sync.all; end
     end
   end
 end

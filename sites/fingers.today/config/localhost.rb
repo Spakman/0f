@@ -15,6 +15,10 @@ module EnvironmentConfig
       }
 
       Sync.const_set(:EXCLUDES_FILE_PATH, "/data/fingers.today/log/sync-excludes")
+
+      def Sync.all
+        system "/data/fingers.today/bin/sync-localhost-pages.sh fingers.today"
+      end
     end
   end
 end

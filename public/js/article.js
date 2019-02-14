@@ -59,6 +59,11 @@ class Article {
     this.pageSaver.save(this.element);
   }
 
+  saveAndFinishedEditing() {
+    this.save();
+    this.pageSaver.finishedEditing();
+  }
+
   startEditing() {
     this.element.contentEditable = true;
     this.focus();
@@ -74,7 +79,7 @@ class Article {
     this.body.classList.remove("editing");
     this.clickableElement.classList.remove("editing");
     this.ensureLinksAreClickable();
-    this.save();
+    this.saveAndFinishedEditing();
     this.element.dispatchEvent(new Event("stopediting"));
   }
 

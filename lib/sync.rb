@@ -9,4 +9,8 @@ module Sync
       end
     end
   end
+
+  def self.all
+    fail "Sync.all must be explicitly redefined in each config/ file."
+  end
 end

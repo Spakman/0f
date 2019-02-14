@@ -5,6 +5,16 @@ class PageSaver {
     this.saveCount = 0;
   }
 
+  finishedEditing() {
+    const url = location.protocol + "//" + window.location.host + "/_/finished-editing";
+    return fetch(url, {
+      method: "post",
+      credentials: "include"
+    }).catch(function(err) {
+      console.error(err);
+    }.bind(this));
+  }
+
   save(article) {
     this.saveCount++;
     if(this.saveCount >= this.saveToServerAfter) {

@@ -83,6 +83,11 @@ class ZeroEff < Sinatra::Base
     end
   end
 
+  post "/_/finished-editing" do
+    return 401 unless authenticated?
+    Sync.all
+  end
+
   post "/*" do
     return 401 unless authenticated?
     begin
