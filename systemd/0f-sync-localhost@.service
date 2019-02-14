@@ -4,9 +4,9 @@ Description=Synchronise local data for %i 0f site
 [Service]
 Type=oneshot
 
-User=%i
+User=1002
 PermissionsStartOnly=True
 
-WorkingDirectory=/run/0f/%i/
+WorkingDirectory=/data/%i/
 
-ExecStart=/data/0f/lib/bin/sync-localhost-pages.sh
+ExecStart=/data/%i/bin/sync-localhost-pages.sh %i

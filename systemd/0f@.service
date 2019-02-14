@@ -1,28 +1,20 @@
 [Unit]
 Description=%i 0f site
-Requires=0f-make-working-dir@%i.service
-After=0f-make-working-dir@%i.service
-WantedBy=nginx.service
 
 [Service]
 Type=simple
 
 Environment=GEM_HOME=/var/gem/0f/
-Environment=RACK_ENV=production
-Environment=ZEROEFF_ENV=server
+Environment=RACK_ENV=development
+Environment=ZEROEFF_ENV=localhost
 
-User=%I
-Group=%i
+User=1002
 UMask=0002
 PermissionsStartOnly=True
 
-WorkingDirectory=/run/0f/%i/
+WorkingDirectory=/data/%i/
 
-ExecStartPre=/bin/mount -t overlay overlay -o index=off,workdir=/data/0f/sites/%i/mnt/workdir-upper/,upperdir=/data/0f/sites/%i/data/,lowerdir=/data/0f/sites/%i/install/:/data/0f/sites/%i/lib/:/data/0f/lib/ /run/0f/%i/
-
-ExecStart=/usr/local/bin/ruby /run/0f/%i/0f.rb
-
-ExecStopPost=/bin/umount -l /run/0f/%i/
+ExecStart=/usr/bin/ruby /data/%i/0f.rb
 
 [Install]
 WantedBy=multi-user.target
