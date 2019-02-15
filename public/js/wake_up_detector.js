@@ -1,5 +1,5 @@
 class WakeUpDetector {
-  static WAKE_UP_TIME() { return 60000; }
+  static WAKE_UP_TIME() { return 30000; }
 
   constructor(html) {
     this.lastInputTime = Date.now();
