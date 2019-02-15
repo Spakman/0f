@@ -65,6 +65,7 @@ class ZeroEff < Sinatra::Base
       page = RenderableFile.build(params[:splat].first)
       Sync.append_to_excludes(page.uri_path)
       page.delete!
+      Thread.new { Sync.all }
       redirect(page.parent.uri_path)
     rescue IllegalPagePath
       halt 400
@@ -77,6 +78,7 @@ class ZeroEff < Sinatra::Base
       page = RenderableFile.build(params[:splat].first, with_index_page: true)
       Sync.append_to_excludes(page.uri_path) if request.env["HTTP_X_ZEROEFF_NEW_PAGE"]
       page.save(request.body.read.strip)
+      Sync.all if request.env["HTTP_X_ZEROEFF_NEW_PAGE"]
       200
     rescue IllegalPagePath
       halt 400
@@ -105,6 +107,7 @@ class ZeroEff < Sinatra::Base
       new_uri_path = params[:splat].first
       Sync.append_to_excludes(old_page.uri_path, new_uri_path)
       old_page.move_to(new_uri_path)
+      Thread.new { Sync.all }
       200
     rescue IllegalPagePath
       halt 400
