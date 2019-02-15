@@ -23,4 +23,5 @@ window.onload = function() {
   );
 
   let keyboard = new Keyboard(document.body, article, editMenu);
+  let wakeUpDetector = new WakeUpDetector(document.querySelector("html"));
 };

@@ -83,6 +83,16 @@ class ZeroEff < Sinatra::Base
     end
   end
 
+  post "/_/wake-up" do
+    return 401 unless authenticated?
+    changed_files = Sync.all
+    if changed_files.include?(request.body.read)
+      200
+    else
+      204
+    end
+  end
+
   post "/_/finished-editing" do
     return 401 unless authenticated?
     Sync.all
