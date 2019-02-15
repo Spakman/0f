@@ -88,7 +88,10 @@ class ZeroEff < Sinatra::Base
   post "/_/wake-up" do
     return 401 unless authenticated?
     changed_files = Sync.all
-    if changed_files.include?(request.body.read)
+    body = request.body.read
+    body = body[1, body.length] if body[0] ==?/
+    current_page = RenderableFile.build(body, with_index_page: true)
+    if changed_files.include?(current_page.uri_path)
       200
     else
       204
