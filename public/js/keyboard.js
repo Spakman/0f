@@ -46,6 +46,16 @@ class Keyboard {
           ev.preventDefault();
           this.editMenu.locationMenuEntry.click();
         }
+        // right-alt-d deletes the current page
+        else if(ev.charCode == 240) {
+          ev.preventDefault();
+          this.editMenu.deleteMenuEntry.click();
+        }
+        // right-alt-m moves the current page
+        else if(ev.charCode == 181) {
+          ev.preventDefault();
+          this.editMenu.moveMenuEntry.click();
+        }
       }
       else {
         // # navigates to /private/
@@ -63,6 +73,16 @@ class Keyboard {
           ev.preventDefault();
           this.article.startEditing();
           this.editMenu.locationMenuEntry.click();
+        }
+        // right-alt-d deletes the current page
+        else if(ev.charCode == 240) {
+          ev.preventDefault();
+          this.editMenu.deleteMenuEntry.click();
+        }
+        // right-alt-m moves the current page
+        else if(ev.charCode == 181) {
+          ev.preventDefault();
+          this.editMenu.moveMenuEntry.click();
         }
       }
     }.bind(this));

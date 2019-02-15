@@ -24,6 +24,10 @@ class MoveMenuEntry {
     }
   }
 
+  click() {
+    this.element.click();
+  }
+
   getHref(ev) {
     ev.preventDefault();
     ev.stopPropagation();
@@ -62,6 +66,10 @@ class DeleteMenuEntry {
       this.element = element;
       this.element.addEventListener("click", this.confirmDelete.bind(this))
     }
+  }
+
+  click() {
+    this.element.click();
   }
 
   confirmDelete(ev) {
