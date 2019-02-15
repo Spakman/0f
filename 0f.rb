@@ -3,7 +3,7 @@ require "pathname"
 
 require_relative "lib/renderable_file"
 require_relative "lib/sync"
-environment = %w( server localhost ).detect(-> { "development" }) do |env|
+environment = %w( server localhost android ).detect(-> { "development" }) do |env|
   env == ENV["ZEROEFF_ENV"]
 end
 require_relative "config/#{environment}"
