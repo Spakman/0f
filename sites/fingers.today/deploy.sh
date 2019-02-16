@@ -19,6 +19,6 @@ else
     tar -zxvf deploy.tar.gz &&
     rm deploy.tar.gz &&
     sudo PATH=$PATH ${base_dir%/}/lib/bin/0f --base-dir ${base_dir} --domain ${domain} --install-nginx ${domain}.conf --fingerprint &&
-    echo $(date): ${revision_for_log} >> ${site_base_dir}log/deploy.log
+    echo $(date): ${revision_for_log} >> ${site_base_dir}data/log/deploy.log
   "
 fi
