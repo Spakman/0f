@@ -23,7 +23,7 @@
       "sizes": "192x192"
     }
   ],
-  "start_url": "/",
+  "start_url": "/private/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff"

@@ -31,6 +31,10 @@ end
 
 class ZeroEff < Sinatra::Base
 
+  configure do
+    mime_type :webmanifest, "application/manifest+json"
+  end
+
   helpers ViewHelpers
 
   include EnvironmentConfig
