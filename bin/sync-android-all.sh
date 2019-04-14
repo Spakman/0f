@@ -10,4 +10,4 @@ pkill -9 ruby
 
 cd $HOME/${domain}/
 
-ZEROEFF_ENV=android nohup ruby 0f.rb &
+ZEROEFF_ENV=android nohup ruby 0f.rb 2>&1 > /dev/null &
