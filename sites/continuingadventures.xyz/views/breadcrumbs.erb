@@ -1,0 +1,12 @@
+    <nav>
+      <ul id="breadcrumbs">
+        <% if current_page.uri_path != ?/ %>
+          <% breadcrumb_pages.each do |crumb| %>
+        <li><a href="<%= crumb.uri_path %>"><%= crumb.basename %></a></li>
+          <% end %>
+        <li><h1><%= current_page.basename %></h1></li>
+        <% else %>
+          <li><h1>Adventures</h1></li>
+      <% end%>
+      </ul>
+    </nav>
